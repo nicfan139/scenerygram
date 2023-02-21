@@ -6,6 +6,11 @@
 	},
 	"scripts": {
 		"dev": "nodemon ./src/server.ts",
+		"db:sync": "npx typeorm-ts-node-commonjs schema:sync -d ./src/typeOrm.ts",
+		"db:pending": "npx typeorm-ts-node-commonjs migration:show -d ./src/typeOrm.ts",
+		"db:migrate": "npx typeorm-ts-node-commonjs migration:run -d ./src/typeOrm.ts",
+		"db:drop": "npx typeorm-ts-node-commonjs schema:drop -d ./src/typeOrm.ts",
+		"db:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./src/typeOrm.ts",
 		"type-check": "tsc --noEmit",
 		"format": "prettier --write .",
 		"polish": "npm run type-check && npm run format",
@@ -33,6 +38,8 @@
 		"jsonwebtoken": "^9.0.0",
 		"morgan": "^1.10.0",
 		"pg": "^8.9.0",
+		"reflect-metadata": "^0.1.13",
+		"typeorm": "^0.3.12",
 		"ws": "^8.12.1"
 	},
 	"devDependencies": {

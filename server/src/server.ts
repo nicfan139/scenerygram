@@ -10,6 +10,7 @@ import { expressjwt, Request } from 'express-jwt';
 import { useServer as useWsServer } from 'graphql-ws/lib/use/ws';
 import { createServer as createHttpServer } from 'http';
 import { WebSocketServer } from 'ws';
+import { AppDataSource } from './typeOrm';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 
@@ -20,6 +21,14 @@ const PORT = process.env.PORT;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
 
 const server = async () => {
+	await AppDataSource.initialize()
+		.then(() => {
+			console.log('Data Source (postgres) has been initialized!');
+		})
+		.catch((err) => {
+			console.error('Error during Data Source (postgres) initialization', err);
+		});
+
 	app.use(
 		morgan('dev'),
 		cors(),

@@ -1,17 +1,120 @@
+import bcrypt from 'bcrypt';
+import { UserRepository, throwError } from './helpers';
+
 export const UserResolvers = {
 	Query: {
-		users: async (_root: unknown, _args: unknown) => {},
+		user: async (
+			_root: unknown,
+			args: { userId: string },
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
 
-		user: async (_root: unknown, _args: unknown) => {}
+			const user = await UserRepository.findOneBy({ id: args.userId });
+			if (user) {
+				return user;
+			} else {
+				throwError(`User #${args.userId} does not exist`);
+			}
+		}
 	},
 
 	Mutation: {
-		addUser: async (_root: unknown, _args: unknown) => {},
+		updateUser: async (
+			_root: unknown,
+			args: {
+				userId: string;
+				input: {
+					firstName: string;
+					lastName: string;
+					username: string;
+					avatarUrl: string;
+				};
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
 
-		updateUser: async (_root: unknown, _args: unknown) => {},
+			const user = await UserRepository.findOneBy({
+				id: args.userId
+			});
 
-		updateUserPassword: async (_root: unknown, _args: unknown) => {},
+			if (user) {
+				UserRepository.merge(user, args.input);
+				const updatedUser = await UserRepository.save(user);
+				return updatedUser;
+			} else {
+				throwError(`User #${args.userId} does not exist`);
+			}
+		},
 
-		deleteUser: async (_root: unknown, _args: unknown) => {}
+		updateUserPassword: async (
+			_root: unknown,
+			args: {
+				input: {
+					currentPassword: string;
+					newPassword: string;
+				};
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			const user = await UserRepository.findOneBy({ id: context.id });
+
+			if (user) {
+				const passwordMatch = await bcrypt.compare(args.input.currentPassword, user.password);
+				if (passwordMatch) {
+					const BCRYPT_SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS;
+					const hashedPassword = await bcrypt.hash(
+						args.input.newPassword,
+						Number(BCRYPT_SALT_ROUNDS)
+					);
+					if (hashedPassword) {
+						const payload = {
+							...user,
+							password: hashedPassword
+						};
+						const updatedUser = await UserRepository.save(payload);
+						return updatedUser;
+					} else {
+						throwError('Unable to encrypt new password');
+					}
+				} else {
+					throwError(`Current password entered for user #${user.id} is incorrect`);
+				}
+			} else {
+				throwError(`Unable to fetch details for user #${context.id}`);
+			}
+		},
+
+		deleteUser: async (
+			_root: unknown,
+			args: {
+				userId: string;
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			await UserRepository.delete(args.userId);
+			return `Successfully deleted user #${args.userId}`;
+		}
 	}
 };
