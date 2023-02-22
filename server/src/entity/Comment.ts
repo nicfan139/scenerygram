@@ -5,15 +5,14 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	ManyToOne,
-	OneToMany,
 	ManyToMany,
 	JoinTable
 } from 'typeorm';
-import { Comment } from './Comment';
+import { Post } from './Post';
 import { User } from './User';
 
 @Entity()
-export class Post {
+export class Comment {
 	@PrimaryGeneratedColumn('uuid')
 	id!: string;
 
@@ -21,13 +20,7 @@ export class Post {
 		type: 'text',
 		nullable: false
 	})
-	caption!: string;
-
-	@Column({
-		type: 'text',
-		nullable: true
-	})
-	imgUrl!: string;
+	text!: string;
 
 	@CreateDateColumn({
 		type: 'timestamptz',
@@ -41,13 +34,13 @@ export class Post {
 	})
 	updatedAt!: Date;
 
-	@ManyToOne(() => User, (user) => user.posts)
+	@ManyToOne(() => User, (user) => user.comments)
 	author!: User;
 
-	@OneToMany(() => Comment, (comment) => comment.post)
-	comments!: Comment[];
+	@ManyToOne(() => Post, (post) => post.comments)
+	post!: Post;
 
-	@ManyToMany(() => User, (user) => user.likedPosts)
+	@ManyToMany(() => User, (user) => user.likedComments)
 	@JoinTable()
 	likes!: User[];
 }

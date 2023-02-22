@@ -1,4 +1,4 @@
-import { PostRepository, throwError, pubSub, UserRepository } from './helpers';
+import { PostRepository, throwError, pubSub, UserRepository, CommentRepository } from './helpers';
 
 export const PostResolvers = {
 	Query: {
@@ -110,15 +110,45 @@ export const PostResolvers = {
 			if (!context.id) {
 				throwError('Unauthorized');
 			}
-			// TODO: Delete all comments + likes
 
-			await PostRepository.delete(args.postId);
+			const POST_ID_TO_DELETE = args.postId;
 
-			pubSub.publish('POST_DELETED', {
-				postDeleted: args.postId
+			const post = await PostRepository.findOne({
+				where: {
+					id: args.postId
+				},
+				relations: {
+					comments: true,
+					likes: true
+				}
 			});
 
-			return `Successfully deleted post #${args.postId}`;
+			if (post) {
+				// Delete all post comments
+				await Promise.all(
+					post.comments.map(async (comment) => {
+						await CommentRepository.delete(comment.id);
+					})
+				);
+
+				// Remove post from each user's liked posts
+				await Promise.all(
+					post.likes.map(async (user) => {
+						user.likedPosts = user.likedPosts.filter((post) => post.id !== POST_ID_TO_DELETE);
+						await UserRepository.save(user);
+					})
+				);
+
+				await PostRepository.delete(POST_ID_TO_DELETE);
+
+				pubSub.publish('POST_DELETED', {
+					postDeleted: POST_ID_TO_DELETE
+				});
+
+				return `Successfully deleted post #${POST_ID_TO_DELETE}`;
+			} else {
+				throwError(`Post #${POST_ID_TO_DELETE} does not exist`);
+			}
 		}
 	},
 

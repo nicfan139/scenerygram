@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
+import { Comment } from './entity/Comment';
 import { Post } from './entity/Post';
 import { User } from './entity/User';
 
@@ -23,7 +24,7 @@ export const AppDataSource = new DataSource({
 	synchronize: false,
 	migrationsRun: true,
 	logging: false,
-	entities: [Post, User],
+	entities: [Comment, Post, User],
 	migrations: [process.env.TYPEORM_MIGRATION_DIR as string],
 	subscribers: []
 });

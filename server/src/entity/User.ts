@@ -7,6 +7,7 @@ import {
 	OneToMany,
 	ManyToMany
 } from 'typeorm';
+import { Comment } from './Comment';
 import { Post } from './Post';
 
 @Entity()
@@ -61,4 +62,10 @@ export class User {
 
 	@ManyToMany(() => Post, (post) => post.likes)
 	likedPosts!: Post[];
+
+	@OneToMany(() => Comment, (comment) => comment.author)
+	comments!: Comment[];
+
+	@ManyToMany(() => Comment, (comment) => comment.likes)
+	likedComments!: Comment[];
 }

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { UserRepository, throwError } from './helpers';
+import { UserRepository, throwError, PostRepository, CommentRepository } from './helpers';
 
 export const UserResolvers = {
 	Query: {
@@ -113,8 +113,38 @@ export const UserResolvers = {
 				throwError('Unauthorized');
 			}
 
-			await UserRepository.delete(args.userId);
-			return `Successfully deleted user #${args.userId}`;
+			const USER_ID_TO_DELETE = args.userId;
+
+			const user = await UserRepository.findOne({
+				where: {
+					id: USER_ID_TO_DELETE
+				},
+				relations: {
+					posts: true,
+					comments: true
+				}
+			});
+
+			if (user) {
+				// Delete user posts
+				await Promise.all(
+					user.posts.map(async (post) => {
+						await PostRepository.delete(post.id);
+					})
+				);
+
+				// Delete user comments
+				await Promise.all(
+					user.comments.map(async (comment) => {
+						await CommentRepository.delete(comment.id);
+					})
+				);
+
+				await UserRepository.delete(USER_ID_TO_DELETE);
+				return `Successfully deleted user #${USER_ID_TO_DELETE}`;
+			} else {
+				throwError(`User #${USER_ID_TO_DELETE} does not exist`);
+			}
 		}
 	}
 };

@@ -12,7 +12,7 @@ export const PostTypeDefs = gql`
 	}
 
 	type Subscription {
-		postAdded: Post
+		postAdded: Post!
 	}
 
 	type Post {
