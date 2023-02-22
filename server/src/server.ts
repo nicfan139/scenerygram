@@ -13,6 +13,7 @@ import { WebSocketServer } from 'ws';
 import { AppDataSource } from './typeOrm';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
+import authRoutes from './routes/auth';
 
 dotenv.config();
 
@@ -39,6 +40,8 @@ const server = async () => {
 			secret: JWT_SECRET_KEY
 		})
 	);
+
+	app.use('/api/auth', authRoutes);
 
 	const getHttpContext = ({ req }: { req: Request }) => {
 		if (req.auth) {
