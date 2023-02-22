@@ -18,6 +18,8 @@ export const UserTypeDefs = gql`
 		username: String!
 		password: String!
 		avatarUrl: String
+		posts: [Post!]
+		likedPosts: [Post!]
 		createdAt: Float!
 		updatedAt: Float!
 	}

@@ -3,8 +3,11 @@ import {
 	PrimaryGeneratedColumn,
 	Column,
 	CreateDateColumn,
-	UpdateDateColumn
+	UpdateDateColumn,
+	OneToMany,
+	ManyToMany
 } from 'typeorm';
+import { Post } from './Post';
 
 @Entity()
 export class User {
@@ -52,4 +55,10 @@ export class User {
 		default: () => 'now()'
 	})
 	updatedAt!: Date;
+
+	@OneToMany(() => Post, (post) => post.author)
+	posts!: Post[];
+
+	@ManyToMany(() => Post, (post) => post.likes)
+	likedPosts!: Post[];
 }
