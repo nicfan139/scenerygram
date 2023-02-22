@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { UserRepository, throwError, PostRepository, CommentRepository } from './helpers';
+
+dotenv.config();
 
 export const UserResolvers = {
 	Query: {
@@ -24,6 +27,40 @@ export const UserResolvers = {
 	},
 
 	Mutation: {
+		addUser: async (
+			_root: unknown,
+			args: {
+				input: {
+					firstName: string;
+					lastName: string;
+					username: string;
+					password: string;
+					avatarUrl: string;
+				};
+			}
+		) => {
+			const existingUser = await UserRepository.findOneBy({ username: args.input.username });
+
+			if (!existingUser) {
+				const BCRYPT_SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS;
+				const hashedPassword = await bcrypt.hash(args.input.password, Number(BCRYPT_SALT_ROUNDS));
+				if (hashedPassword) {
+					const payload = {
+						...args.input,
+						password: hashedPassword
+					};
+					const user = await UserRepository.create(payload);
+					const savedUser = await UserRepository.save(user);
+
+					return savedUser;
+				} else {
+					throwError('Unable to encrypt password');
+				}
+			} else {
+				throwError(`Username "${args.input.username}" already exists`);
+			}
+		},
+
 		updateUser: async (
 			_root: unknown,
 			args: {

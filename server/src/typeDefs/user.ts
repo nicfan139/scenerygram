@@ -6,6 +6,7 @@ export const UserTypeDefs = gql`
 	}
 
 	type Mutation {
+		addUser(input: AddUserInput!): User!
 		updateUser(userId: ID!, input: UpdateUserInput!): User!
 		updateUserPassword(input: UpdatePasswordInput!): User!
 		deleteUser(userId: ID!): String!
@@ -24,6 +25,14 @@ export const UserTypeDefs = gql`
 		likedComments: [Comment!]
 		createdAt: Float!
 		updatedAt: Float!
+	}
+
+	input AddUserInput {
+		firstName: String!
+		lastName: String!
+		username: String!
+		password: String!
+		avatarUrl: String
 	}
 
 	input UpdateUserInput {
