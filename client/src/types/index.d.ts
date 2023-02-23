@@ -25,4 +25,6 @@ type TComment = {
 	text: string;
 	author: TUser;
 	likes: TUser[];
+	createdAt: string;
+	updatedAt: string;
 };

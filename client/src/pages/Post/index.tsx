@@ -1,28 +1,18 @@
-import { ChangeEvent, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 import { FiThumbsUp, FiMessageCircle } from 'react-icons/fi';
 import { usePostQuery } from '@/graphql';
 import { Loading, Title } from '@/components';
-import { formatDate } from '@/helpers';
+import AddCommentInput from './AddCommentInput';
+import Comment from './Comment';
 
 const Post = (): React.ReactElement => {
 	const { postId } = useParams();
 	const { isLoading, post } = usePostQuery(postId as string);
 
-	const [comment, setComment] = useState<string>('');
-
 	const onLikePost = async () => {
 		try {
 			// TODO: Add like post mutation
-		} catch (e: unknown) {
-			const error = e as ErrorEvent;
-			console.log(error);
-		}
-	};
-
-	const onAddComment = async () => {
-		try {
-			// TODO: Add commment mutation
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
@@ -48,8 +38,8 @@ const Post = (): React.ReactElement => {
 
 						<img src={post.imgUrl} alt={post.id} className="h-auto w-full object-contain" />
 
-						<div className="flex justify-between">
-							<p>Posted on {formatDate(post.createdAt)}</p>
+						<div className="flex justify-between items-center">
+							<p>Posted on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
 
 							<button
 								type="button"
@@ -61,6 +51,10 @@ const Post = (): React.ReactElement => {
 								<label>{post.likes.length} likes</label>
 							</button>
 						</div>
+
+						{/* TODO: Add share link */}
+
+						{/* TODO: Add similar posts */}
 					</div>
 
 					<div className="w-full overflow-y-auto">
@@ -69,16 +63,12 @@ const Post = (): React.ReactElement => {
 							Comments ({post.comments.length})
 						</h3>
 
-						<div className="flex gap-2 p-4 bg-white">
-							<input
-								placeholder="Add a comment"
-								className="w-full m-0"
-								onChange={(e: ChangeEvent<HTMLInputElement>) => setComment(e.target.value)}
-								value={comment}
-							/>
-							<button type="button" onClick={onAddComment}>
-								Send
-							</button>
+						<AddCommentInput postId={postId as string} />
+
+						<div>
+							{post.comments.map((comment) => (
+								<Comment comment={comment} />
+							))}
 						</div>
 					</div>
 				</div>

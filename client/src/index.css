@@ -48,6 +48,9 @@ button:hover {
 	color: black;
 	border-color: black;
 }
+button:disabled {
+	cursor: not-allowed;
+}
 
 input {
 	margin: 0 0 16px;

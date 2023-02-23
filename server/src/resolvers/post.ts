@@ -44,9 +44,12 @@ export const PostResolvers = {
 				where: {
 					id: args.postId
 				},
-				relations: ['author', 'likes', 'comments.author'],
+				relations: ['author', 'likes', 'comments.author', 'comments.likes'],
 				order: {
-					createdAt: 'DESC'
+					createdAt: 'DESC',
+					comments: {
+						createdAt: 'DESC'
+					}
 				}
 			});
 
