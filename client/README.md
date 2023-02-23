@@ -1,3 +1,3 @@
 # Scenerygram client
 
-Back-end built using React + TypeScript + GraphQL + Apollo
+Front-end built using React + TypeScript + GraphQL + Apollo
