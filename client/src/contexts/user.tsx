@@ -1,5 +1,5 @@
 import { createContext, ReactElement, ReactNode, useState, useEffect, useContext } from 'react';
-import { LoadingPage } from '@/components';
+import { LoadingScreen } from '@/components';
 import { getAccessToken } from '@/helpers';
 import { useAuthValidateToken } from '@/hooks';
 
@@ -46,7 +46,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }): Reac
 	}, []);
 
 	if (validateToken.isLoading) {
-		return <LoadingPage message="Validating credentials" />;
+		return <LoadingScreen message="Validating credentials" />;
 	}
 
 	console.log('currentUser: ', currentUser);

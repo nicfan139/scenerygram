@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { UserContextProvider } from '@/contexts';
-import { Root, ErrorPage, Posts, Login } from '@/pages';
+import { Root, ErrorPage, Posts, Post, Login } from '@/pages';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
 			{
 				path: '/posts',
 				element: <Posts />
+			},
+			{
+				path: '/posts/:postId',
+				element: <Post />
 			}
 		],
 		errorElement: <ErrorPage />

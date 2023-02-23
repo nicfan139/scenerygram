@@ -1,4 +1,4 @@
-import { PostRepository, throwError, pubSub, UserRepository, CommentRepository } from './helpers';
+import { PostRepository, throwError, UserRepository, CommentRepository } from './helpers';
 
 export const PostResolvers = {
 	Query: {
@@ -16,7 +16,8 @@ export const PostResolvers = {
 			const posts = await PostRepository.find({
 				relations: {
 					author: true,
-					likes: true
+					likes: true,
+					comments: true
 				},
 				order: {
 					createdAt: 'DESC'
@@ -24,6 +25,36 @@ export const PostResolvers = {
 			});
 
 			return posts;
+		},
+
+		post: async (
+			_root: unknown,
+			args: {
+				postId: string;
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			const post = await PostRepository.findOne({
+				where: {
+					id: args.postId
+				},
+				relations: ['author', 'likes', 'comments.author'],
+				order: {
+					createdAt: 'DESC'
+				}
+			});
+
+			if (post) {
+				return post;
+			} else {
+				throwError(`Post #${args.postId} does not exist`);
+			}
 		}
 	},
 
@@ -54,11 +85,6 @@ export const PostResolvers = {
 
 				const post = await PostRepository.create(payload);
 				const result = await PostRepository.save(post);
-
-				pubSub.publish('POST_ADDED', {
-					postAdded: result
-				});
-
 				return result;
 			} else {
 				throwError(`Unable to find user #${context.id}`);
@@ -87,11 +113,6 @@ export const PostResolvers = {
 			if (post) {
 				const updatedPost = PostRepository.merge(post, args.input);
 				const result = await PostRepository.save(updatedPost);
-
-				pubSub.publish('POST_UPDATED', {
-					postUpdated: result
-				});
-
 				return result;
 			} else {
 				throwError(`Post #${args.postId} does not exist`);
@@ -140,31 +161,9 @@ export const PostResolvers = {
 				);
 
 				await PostRepository.delete(POST_ID_TO_DELETE);
-
-				pubSub.publish('POST_DELETED', {
-					postDeleted: POST_ID_TO_DELETE
-				});
-
 				return `Successfully deleted post #${POST_ID_TO_DELETE}`;
 			} else {
 				throwError(`Post #${POST_ID_TO_DELETE} does not exist`);
-			}
-		}
-	},
-
-	Subscription: {
-		postAdded: {
-			subscribe: (
-				_root: unknown,
-				_args: unknown,
-				context: {
-					id: string;
-				}
-			) => {
-				if (!context.id) {
-					throwError('Unauthorized');
-				}
-				return pubSub.asyncIterator('POST_ADDED');
 			}
 		}
 	}

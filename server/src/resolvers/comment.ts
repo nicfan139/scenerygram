@@ -1,4 +1,4 @@
-import { CommentRepository, PostRepository, UserRepository, throwError, pubSub } from './helpers';
+import { CommentRepository, PostRepository, UserRepository, throwError } from './helpers';
 
 export const CommentResolvers = {
 	Mutation: {
@@ -26,32 +26,9 @@ export const CommentResolvers = {
 					post
 				});
 				const result = await CommentRepository.save(comment);
-
-				pubSub.publish('COMMENT_ADDED', {
-					commentAdded: result
-				});
-
 				return result;
 			} else {
 				throwError(`Unable to create new comment for post #${args.postId}`);
-			}
-		}
-	},
-
-	Subscription: {
-		commentAdded: {
-			subscribe: (
-				_root: unknown,
-				_args: unknown,
-				context: {
-					id: string;
-				}
-			) => {
-				if (!context.id) {
-					throwError('Unauthorized');
-				}
-
-				return pubSub.asyncIterator('POST_ADDED');
 			}
 		}
 	}

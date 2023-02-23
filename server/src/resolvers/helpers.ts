@@ -1,5 +1,4 @@
 import { GraphQLError } from 'graphql';
-import { PubSub } from 'graphql-subscriptions';
 import { AppDataSource } from '../typeOrm';
 import { Comment } from '../entity/Comment';
 import { Post } from '../entity/Post';
@@ -12,5 +11,3 @@ export const UserRepository = AppDataSource.getRepository(User);
 export const throwError = (error: string) => {
 	throw new GraphQLError(error);
 };
-
-export const pubSub = new PubSub();

@@ -1,21 +1,14 @@
-import { useNavigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
 import { FiMap } from 'react-icons/fi';
 import { useUserContext } from '@/contexts';
-import { getAccessToken, handleLogout } from '@/helpers';
-import { useEffect } from 'react';
+import { handleLogout } from '@/helpers';
+import { client } from '@/graphql';
 
 const Root = (): React.ReactElement => {
-	const navigate = useNavigate();
 	const { currentUser } = useUserContext();
-
-	useEffect(() => {
-		if (getAccessToken()) {
-			navigate('/posts');
-		}
-	}, []);
-
 	return (
-		<>
+		<ApolloProvider client={client}>
 			{currentUser && (
 				<nav className="fixed top-0 left-0 right-0 md:relative flex justify-between items-center md:justify-center md:mb-6 p-4 text-white bg-slate-900">
 					<div className="flex gap-4 items-center text-3xl">
@@ -35,10 +28,10 @@ const Root = (): React.ReactElement => {
 				</nav>
 			)}
 
-			<div className="w-full md:max-w-screen-lg mt-24 md:mt-0 px-4 md:px-0 md:mx-auto">
+			<main className="w-full md:max-w-screen-lg pt-24 md:pt-0 px-4 md:px-0 md:mx-auto">
 				<Outlet />
-			</div>
-		</>
+			</main>
+		</ApolloProvider>
 	);
 };
 

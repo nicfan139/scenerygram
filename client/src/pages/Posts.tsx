@@ -1,14 +1,17 @@
-import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 import { FiThumbsUp, FiMessageCircle } from 'react-icons/fi';
-import { LoadingPage, Title } from '@/components';
+import { LoadingScreen, Title } from '@/components';
 import { useUserContext } from '@/contexts';
+import { usePostsQuery } from '@/graphql';
+import { formatDate } from '@/helpers';
 
 const Posts = (): React.ReactElement => {
-	// TODO: make posts query
+	const navigate = useNavigate();
 	const { currentUser } = useUserContext();
+	const { isLoading, posts } = usePostsQuery();
 
-	if (!currentUser) {
-		return <LoadingPage />;
+	if (!currentUser || isLoading || !posts) {
+		return <LoadingScreen />;
 	}
 
 	return (
@@ -18,17 +21,16 @@ const Posts = (): React.ReactElement => {
 			</Title>
 
 			<div className="flex gap-4 my-4">
-				{(currentUser as TUser).posts.map((post) => (
+				{posts.map((post) => (
 					<div
 						key={`post-card-${post.id}`}
 						className="flex flex-col bg-white hover:-translate-y-2 hover:cursor-pointer transition-all"
+						onClick={() => navigate(`/posts/${post.id}`)}
 					>
 						<img src={post.imgUrl} alt={post.id} className="h-48 w-80 object-cover" />
 						<div className="py-2 px-4">
 							<div className="flex justify-end items-center">
-								<p className="text-slate-400 italic">
-									{dayjs(post.createdAt).format('DD/MM/YYYY h:MM a')}
-								</p>
+								<p className="text-slate-400 italic">{formatDate(post.createdAt)}</p>
 							</div>
 							<div className="mb-3 text-lg">{post.caption}</div>
 							<div className="flex gap-4 items-center mb-2">

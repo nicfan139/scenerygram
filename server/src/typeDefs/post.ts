@@ -3,6 +3,7 @@ import { gql } from 'graphql-tag';
 export const PostTypeDefs = gql`
 	type Query {
 		posts: [Post!]
+		post(postId: ID!): Post!
 	}
 
 	type Mutation {
@@ -11,16 +12,13 @@ export const PostTypeDefs = gql`
 		deletePost(postId: ID!): String!
 	}
 
-	type Subscription {
-		postAdded: Post!
-	}
-
 	type Post {
 		id: ID!
 		imgUrl: String!
 		caption: String!
 		author: User!
 		likes: [User!]
+		comments: [Comment!]
 		createdAt: Float!
 		updatedAt: Float!
 	}

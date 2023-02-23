@@ -5,10 +5,6 @@ export const CommentTypeDefs = gql`
 		addComment(postId: ID!, text: String!): Comment!
 	}
 
-	type Subscription {
-		commentAdded: Comment!
-	}
-
 	type Comment {
 		id: ID!
 		text: String!
