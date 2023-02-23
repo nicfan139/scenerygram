@@ -22,7 +22,8 @@
 		"react-hook-form": "^7.43.2",
 		"react-icons": "^4.7.1",
 		"react-query": "^3.39.3",
-		"react-router-dom": "^6.8.1"
+		"react-router-dom": "^6.8.1",
+		"react-slideshow-image": "^4.2.1"
 	},
 	"devDependencies": {
 		"@types/node": "^18.14.0",

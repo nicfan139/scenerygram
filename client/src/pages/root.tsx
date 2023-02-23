@@ -11,7 +11,7 @@ const Root = (): React.ReactElement => {
 		<ApolloProvider client={client}>
 			{currentUser && (
 				<nav className="fixed top-0 left-0 right-0 md:relative flex justify-between items-center md:justify-center md:mb-6 p-4 text-white bg-slate-900">
-					<div className="flex gap-4 items-center text-3xl">
+					<div className="flex gap-2 items-center text-3xl">
 						<FiMap />
 						<h1>Scenerygram</h1>
 					</div>

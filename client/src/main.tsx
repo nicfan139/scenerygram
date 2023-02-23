@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { UserContextProvider } from '@/contexts';
+import { ScreenContextProvider, UserContextProvider } from '@/contexts';
 import { Root, ErrorPage, Posts, Post, Login } from '@/pages';
 import './index.css';
 
@@ -33,9 +33,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<UserContextProvider>
-				<RouterProvider router={router} />
-			</UserContextProvider>
+			<ScreenContextProvider>
+				<UserContextProvider>
+					<RouterProvider router={router} />
+				</UserContextProvider>
+			</ScreenContextProvider>
 		</QueryClientProvider>
 	</React.StrictMode>
 );

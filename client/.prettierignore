@@ -6,3 +6,4 @@ tsconfig.node.json
 tailwind.config.cjs
 postcss.config.cjs
 src/vite-env.d.ts
+dist/
