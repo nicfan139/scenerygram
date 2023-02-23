@@ -57,7 +57,7 @@ router.post('/validate_token', async (req: Request, res: Response) => {
 	if (jwtPayload) {
 		const user = await UserRepository.findOne({
 			where: { id: (jwtPayload as JwtPayload).id },
-			relations: ['posts', 'posts.comments', 'posts.comments.author', 'posts.comments.likes'],
+			relations: ['posts', 'posts.comments', 'posts.likes', 'posts.comments.author', 'posts.comments.likes'],
 			order: {
 				posts: {
 					createdAt: 'DESC'
@@ -69,7 +69,14 @@ router.post('/validate_token', async (req: Request, res: Response) => {
 			res.status(200).json({
 				isTokenValid: true,
 				user: {
-					id: user.id
+					id: user.id,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					username: user.username,
+					avatarUrl: user.avatarUrl,
+					posts: user.posts,
+					createdAt: user.createdAt,
+					updatedAt: user.updatedAt
 				}
 			});
 		} else {
