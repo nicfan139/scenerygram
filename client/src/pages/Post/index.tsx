@@ -26,7 +26,7 @@ const Post = (): React.ReactElement => {
 		}
 	};
 
-	const onUnLikePost = async () => {
+	const onUnlikePost = async () => {
 		try {
 			await unlikePost(postId as string);
 		} catch (e: unknown) {
@@ -59,14 +59,14 @@ const Post = (): React.ReactElement => {
 				</div>
 			) : (
 				<div className="flex gap-6 flex-col md:flex-row">
-					<div className="w-3/5">
+					<div className="w-full md:w-3/5">
 						<Title>
 							<h2>{post.caption}</h2>
 						</Title>
 
 						<img src={post.imgUrl} alt={post.id} className="h-auto w-full object-contain mb-4" />
 
-						<div className="flex justify-between items-center mb-4">
+						<div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
 							<div className="flex flex-col">
 								<p className="font-semibold">Posted by {post.author.username}</p>
 								<p className="italic">on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
@@ -76,7 +76,7 @@ const Post = (): React.ReactElement => {
 								<button
 									type="button"
 									title={`${CURRENT_USER_LIKES_POST ? 'Unlike' : 'Like'} this post`}
-									onClick={CURRENT_USER_LIKES_POST ? onUnLikePost : onLikePost}
+									onClick={CURRENT_USER_LIKES_POST ? onUnlikePost : onLikePost}
 									className={twMerge(
 										'flex gap-2 items-center',
 										CURRENT_USER_LIKES_POST &&
@@ -104,7 +104,7 @@ const Post = (): React.ReactElement => {
 						{/* TODO: Add similar posts */}
 					</div>
 
-					<div className="w-2/5 overflow-y-auto">
+					<div className="w-full md:w-2/5 overflow-y-auto">
 						<h3 className="flex gap-2 items-center mb-2 text-xl">
 							<FiMessageCircle />
 							Comments ({post.comments.length})

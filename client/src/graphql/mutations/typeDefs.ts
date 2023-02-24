@@ -1,6 +1,20 @@
 import { gql } from '@apollo/client';
 import { COMMENT_LIKE_FRAGMENT, POST_LIKE_FRAGMENT } from './fragments';
 
+export const ADD_POST_MUTATION = gql`
+	mutation AddPostMutation($input: AddPostInput!) {
+		post: addPost(input: $input) {
+			id
+			imgUrl
+			caption
+			author {
+				id
+				username
+			}
+		}
+	}
+`;
+
 export const LIKE_POST_MUTATION = gql`
 	mutation LikePostMutation($postId: ID!) {
 		post: likePost(postId: $postId) {

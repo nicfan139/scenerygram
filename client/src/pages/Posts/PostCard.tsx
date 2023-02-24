@@ -13,10 +13,10 @@ const PostCard = ({ post }: IPostCardProps): React.ReactElement => {
 
 	return (
 		<div
-			className="flex flex-col bg-white hover:-translate-y-2 hover:cursor-pointer transition-all"
+			className="w-full sm:w-5/12 md:w-auto flex flex-col bg-white hover:-translate-y-2 hover:cursor-pointer transition-all"
 			onClick={() => navigate(`/posts/${id}`)}
 		>
-			<img src={imgUrl} alt={id} className="h-36 w-full object-cover" />
+			<img src={imgUrl} alt={id} className="h-60 md:h-36 w-full object-cover" />
 
 			<div className="py-2 px-4">
 				<div className="flex justify-end items-center">

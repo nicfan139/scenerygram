@@ -1,13 +1,37 @@
 import { useMutation } from '@apollo/client';
 import { getRequestHeaders } from '@/helpers';
-import { POST_QUERY } from '../queries/typeDefs';
+import { POSTS_QUERY, POST_QUERY } from '../queries/typeDefs';
 import {
+	ADD_POST_MUTATION,
 	LIKE_POST_MUTATION,
 	UNLIKE_POST_MUTATION,
 	ADD_COMMENT_MUTATION,
 	LIKE_COMMENT_MUTATION,
 	UNLIKE_COMMENT_MUTATION
 } from './typeDefs';
+
+export const useAddPostMutation = () => {
+	const [mutate, { loading }] = useMutation(ADD_POST_MUTATION);
+
+	return {
+		isLoading: loading,
+		addPost: async (input: { imgUrl: string; caption: string }) => {
+			const post = await mutate({
+				context: getRequestHeaders(),
+				variables: {
+					input
+				},
+				refetchQueries: [
+					{
+						query: POSTS_QUERY,
+						context: getRequestHeaders()
+					}
+				]
+			});
+			return post;
+		}
+	};
+};
 
 export const useLikePostMutation = () => {
 	const [mutate] = useMutation(LIKE_POST_MUTATION);
