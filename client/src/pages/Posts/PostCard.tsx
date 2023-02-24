@@ -11,6 +11,8 @@ const PostCard = ({ post }: IPostCardProps): React.ReactElement => {
 
 	const { id, imgUrl, caption, likes, comments, createdAt } = post;
 
+	// TODO: Add like/unlike post mutations here?
+
 	return (
 		<div
 			key={`post-card-${id}`}

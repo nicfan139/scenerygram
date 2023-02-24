@@ -122,6 +122,74 @@ export const PostResolvers = {
 			}
 		},
 
+		likePost: async (
+			_root: unknown,
+			args: {
+				postId: string;
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			const user = await UserRepository.findOneBy({
+				id: context.id
+			});
+
+			const post = await PostRepository.findOne({
+				where: {
+					id: args.postId
+				},
+				relations: {
+					likes: true
+				}
+			});
+
+			if (user && post) {
+				const updatedPost = PostRepository.merge(post, {
+					likes: [...post.likes, user]
+				});
+				const result = await PostRepository.save(updatedPost);
+				return result;
+			} else {
+				throwError('Unable to like post');
+			}
+		},
+
+		unlikePost: async (
+			_root: unknown,
+			args: {
+				postId: string;
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			const post = await PostRepository.findOne({
+				where: {
+					id: args.postId
+				},
+				relations: {
+					likes: true
+				}
+			});
+
+			if (post) {
+				post.likes = post.likes.filter((user) => user.id !== context.id);
+				const result = await PostRepository.save(post);
+				return result;
+			} else {
+				throwError('Unable to unlike post');
+			}
+		},
+
 		deletePost: async (
 			_root: unknown,
 			args: {

@@ -9,6 +9,8 @@ export const PostTypeDefs = gql`
 	type Mutation {
 		addPost(input: AddPostInput!): Post!
 		updatePost(postId: ID!, input: UpdatePostInput!): Post!
+		likePost(postId: ID!): Post!
+		unlikePost(postId: ID!): Post!
 		deletePost(postId: ID!): String!
 	}
 
