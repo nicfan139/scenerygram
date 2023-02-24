@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { FiThumbsUp } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
@@ -22,6 +23,7 @@ const Comment = ({ postId, comment }: ICommentProps): React.ReactElement => {
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to like comment');
 		}
 	};
 
@@ -31,6 +33,7 @@ const Comment = ({ postId, comment }: ICommentProps): React.ReactElement => {
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to unlike comment');
 		}
 	};
 

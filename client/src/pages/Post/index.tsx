@@ -1,7 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { FiChevronLeft, FiThumbsUp, FiMessageCircle } from 'react-icons/fi';
+import { FiChevronLeft, FiThumbsUp, FiCopy, FiMessageCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
+import { toast } from 'react-toastify';
 import { Loading, Title } from '@/components';
 import { useUserContext } from '@/contexts';
 import { usePostQuery, useLikePostMutation, useUnlikePostMutation } from '@/graphql';
@@ -21,6 +22,7 @@ const Post = (): React.ReactElement => {
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to like post');
 		}
 	};
 
@@ -30,7 +32,14 @@ const Post = (): React.ReactElement => {
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to unlike post');
 		}
+	};
+
+	const onShareClick = () => {
+		const { navigator, location } = window;
+		navigator.clipboard.writeText(location.href);
+		toast('Copied share link!');
 	};
 
 	const CURRENT_USER_LIKES_POST = post?.likes.some((user) => user.id === currentUser?.id);
@@ -50,7 +59,7 @@ const Post = (): React.ReactElement => {
 				</div>
 			) : (
 				<div className="flex gap-6 flex-col md:flex-row">
-					<div className="w-full max-w-lg">
+					<div className="w-3/5">
 						<Title>
 							<h2>{post.caption}</h2>
 						</Title>
@@ -63,29 +72,39 @@ const Post = (): React.ReactElement => {
 								<p className="italic">on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
 							</div>
 
-							<button
-								type="button"
-								title={`${CURRENT_USER_LIKES_POST ? 'Unlike' : 'Like'} this post`}
-								onClick={CURRENT_USER_LIKES_POST ? onUnLikePost : onLikePost}
-								className={twMerge(
-									'flex gap-2 items-center',
-									CURRENT_USER_LIKES_POST &&
-										'text-white bg-slate-900 border-slate-900 hover:bg-white hover:border-slate-900'
-								)}
-							>
-								<FiThumbsUp />
-								<label>
-									{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}
-								</label>
-							</button>
-						</div>
+							<div className="flex gap-2">
+								<button
+									type="button"
+									title={`${CURRENT_USER_LIKES_POST ? 'Unlike' : 'Like'} this post`}
+									onClick={CURRENT_USER_LIKES_POST ? onUnLikePost : onLikePost}
+									className={twMerge(
+										'flex gap-2 items-center',
+										CURRENT_USER_LIKES_POST &&
+											'text-white bg-slate-900 border-slate-900 hover:bg-white hover:border-slate-900'
+									)}
+								>
+									<FiThumbsUp />
+									<label>
+										{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}
+									</label>
+								</button>
 
-						{/* TODO: Add share link */}
+								<button
+									type="button"
+									title="Copy share link"
+									onClick={onShareClick}
+									className="flex gap-2 items-center"
+								>
+									<FiCopy />
+									Share
+								</button>
+							</div>
+						</div>
 
 						{/* TODO: Add similar posts */}
 					</div>
 
-					<div className="w-full overflow-y-auto">
+					<div className="w-2/5 overflow-y-auto">
 						<h3 className="flex gap-2 items-center mb-2 text-xl">
 							<FiMessageCircle />
 							Comments ({post.comments.length})

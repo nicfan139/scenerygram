@@ -1,4 +1,5 @@
 import { ReactElement, useState, ChangeEvent } from 'react';
+import { toast } from 'react-toastify';
 import { useAddCommentMutation } from '@/graphql';
 
 interface IAddCommentInputProps {
@@ -19,6 +20,7 @@ const AddCommentInput = ({ postId }: IAddCommentInputProps): ReactElement => {
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to add comment');
 		}
 	};
 

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { FiMap } from 'react-icons/fi';
 import { Fade } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
@@ -38,11 +39,12 @@ const Login = (): React.ReactElement => {
 				localStorage.setItem('scenerygram-accessToken', data.accessToken);
 				window.location.href = '/posts';
 			} else {
-				alert('Unable to login :(');
+				toast('Unable to login');
 			}
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to login');
 		}
 	};
 

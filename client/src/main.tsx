@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ScreenContextProvider, UserContextProvider } from '@/contexts';
 import { Root, ErrorPage, Posts, Post, Login } from '@/pages';
 import './index.css';
@@ -35,6 +37,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 		<QueryClientProvider client={queryClient}>
 			<ScreenContextProvider>
 				<UserContextProvider>
+					<ToastContainer
+						position="bottom-right"
+						hideProgressBar={true}
+						autoClose={4000}
+						draggable
+						theme="dark"
+					/>
 					<RouterProvider router={router} />
 				</UserContextProvider>
 			</ScreenContextProvider>

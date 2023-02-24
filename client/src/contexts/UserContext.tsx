@@ -1,6 +1,7 @@
 import { createContext, ReactElement, ReactNode, useState, useEffect, useContext } from 'react';
+import { toast } from 'react-toastify';
 import { LoadingScreen } from '@/components';
-import { getAccessToken } from '@/helpers';
+import { getAccessToken, handleLogout } from '@/helpers';
 import { useAuthValidateToken } from '@/hooks';
 
 const ACCESS_TOKEN = getAccessToken();
@@ -27,11 +28,15 @@ export const UserContextProvider = ({ children }: { children: ReactNode }): Reac
 				const data = await response.json();
 				setCurrentUser(data.user);
 			} else {
-				alert('Unable to validate credentials. Redirecting to login');
+				setTimeout(() => {
+					handleLogout();
+				}, 3000);
+				toast('Unable to validate credentials. Redirecting to login in a few moments');
 			}
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
+			toast('Unable to validate credentials');
 		}
 	};
 
