@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ScreenContextProvider, UserContextProvider } from '@/contexts';
-import { Root, ErrorPage, Posts, Post, Login } from '@/pages';
+import { Root, ErrorPage, Posts, Post, Profile, Login } from '@/pages';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -22,6 +22,10 @@ const router = createBrowserRouter([
 			{
 				path: '/posts/:postId',
 				element: <Post />
+			},
+			{
+				path: '/profile',
+				element: <Profile />
 			}
 		],
 		errorElement: <ErrorPage />

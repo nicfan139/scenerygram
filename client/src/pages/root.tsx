@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate, Outlet } from 'react-router-dom';
+import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { FiMap } from 'react-icons/fi';
 import { useUserContext } from '@/contexts';
 import { getAccessToken, handleLogout } from '@/helpers';
 import { client } from '@/graphql';
+import { Avatar } from '@/components';
 
 const Root = (): React.ReactElement => {
 	const location = useLocation();
@@ -23,14 +24,22 @@ const Root = (): React.ReactElement => {
 
 	return (
 		<ApolloProvider client={client}>
-			{currentUser && (
+			{currentUser?.id && (
 				<nav className="z-40 fixed top-0 left-0 right-0 md:relative flex justify-between items-center md:justify-center md:mb-6 p-4 text-white bg-slate-900">
-					<div className="flex gap-2 items-center text-3xl">
+					<Link
+						to="/posts"
+						className="flex gap-2 items-center text-3xl text-white hover:text-white"
+					>
 						<FiMap />
 						<h1>Scenerygram</h1>
-					</div>
+					</Link>
 
-					<div className="relative md:absolute md:top-3 md:right-4">
+					<div className="relative md:absolute md:top-3 md:right-4 flex gap-6 items-center">
+						<Link to="/profile" className="flex gap-2 items-center text-white hover:text-white">
+							<Avatar imgUrl={currentUser.avatarUrl} size="small" className="border-white" />
+							<label>Profile</label>
+						</Link>
+
 						<button
 							type="button"
 							onClick={handleLogout}
