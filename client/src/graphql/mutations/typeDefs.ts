@@ -1,33 +1,22 @@
 import { gql } from '@apollo/client';
+import { COMMENT_LIKE_FRAGMENT, POST_LIKE_FRAGMENT } from './fragments';
 
 export const LIKE_POST_MUTATION = gql`
 	mutation LikePostMutation($postId: ID!) {
 		post: likePost(postId: $postId) {
-			id
-			imgUrl
-			caption
-			likes {
-				id
-				username
-				avatarUrl
-			}
+			...PostLikeDetail
 		}
 	}
+	${POST_LIKE_FRAGMENT}
 `;
 
 export const UNLIKE_POST_MUTATION = gql`
 	mutation UnlikePostMutation($postId: ID!) {
 		post: unlikePost(postId: $postId) {
-			id
-			imgUrl
-			caption
-			likes {
-				id
-				username
-				avatarUrl
-			}
+			...PostLikeDetail
 		}
 	}
+	${POST_LIKE_FRAGMENT}
 `;
 
 export const ADD_COMMENT_MUTATION = gql`
@@ -47,4 +36,22 @@ export const ADD_COMMENT_MUTATION = gql`
 			updatedAt
 		}
 	}
+`;
+
+export const LIKE_COMMENT_MUTATION = gql`
+	mutation LikeCommentMutation($commentId: ID!) {
+		comment: likeComment(commentId: $commentId) {
+			...CommentLikeDetail
+		}
+	}
+	${COMMENT_LIKE_FRAGMENT}
+`;
+
+export const UNLIKE_COMMENT_MUTATION = gql`
+	mutation UnikeCommentMutation($commentId: ID!) {
+		comment: unlikeComment(commentId: $commentId) {
+			...CommentLikeDetail
+		}
+	}
+	${COMMENT_LIKE_FRAGMENT}
 `;

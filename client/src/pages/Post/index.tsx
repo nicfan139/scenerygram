@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { FiThumbsUp, FiMessageCircle } from 'react-icons/fi';
+import { FiChevronLeft, FiThumbsUp, FiMessageCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import { Loading, Title } from '@/components';
 import { useUserContext } from '@/contexts';
@@ -12,8 +12,8 @@ const Post = (): React.ReactElement => {
 	const { postId } = useParams();
 	const { currentUser } = useUserContext();
 	const { isLoading: isLoadingPost, post } = usePostQuery(postId as string);
-	const { isLoading: isLoadingLikePost, likePost } = useLikePostMutation();
-	const { isLoading: isLoadingUnlikePost, unlikePost } = useUnlikePostMutation();
+	const { likePost } = useLikePostMutation();
+	const { unlikePost } = useUnlikePostMutation();
 
 	const onLikePost = async () => {
 		try {
@@ -38,7 +38,10 @@ const Post = (): React.ReactElement => {
 	return (
 		<div>
 			<div className="mb-4">
-				<Link to="/posts">Back to posts</Link>
+				<Link to="/posts" className="flex gap-1 items-center">
+					<FiChevronLeft />
+					Back to posts
+				</Link>
 			</div>
 
 			{isLoadingPost || !post ? (
@@ -52,10 +55,13 @@ const Post = (): React.ReactElement => {
 							<h2>{post.caption}</h2>
 						</Title>
 
-						<img src={post.imgUrl} alt={post.id} className="h-auto w-full object-contain" />
+						<img src={post.imgUrl} alt={post.id} className="h-auto w-full object-contain mb-4" />
 
-						<div className="flex justify-between items-center">
-							<p>Posted on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
+						<div className="flex justify-between items-center mb-4">
+							<div className="flex flex-col">
+								<p className="font-semibold">Posted by {post.author.username}</p>
+								<p className="italic">on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
+							</div>
 
 							<button
 								type="button"
@@ -66,10 +72,11 @@ const Post = (): React.ReactElement => {
 									CURRENT_USER_LIKES_POST &&
 										'text-white bg-slate-900 border-slate-900 hover:bg-white hover:border-slate-900'
 								)}
-								disabled={isLoadingLikePost || isLoadingUnlikePost}
 							>
 								<FiThumbsUp />
-								<label>{post.likes.length} likes</label>
+								<label>
+									{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}
+								</label>
 							</button>
 						</div>
 
@@ -88,7 +95,7 @@ const Post = (): React.ReactElement => {
 
 						<div>
 							{post.comments.map((comment) => (
-								<Comment comment={comment} />
+								<Comment key={`post-comment-${comment.id}`} postId={post.id} comment={comment} />
 							))}
 						</div>
 					</div>

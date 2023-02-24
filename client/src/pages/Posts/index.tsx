@@ -19,7 +19,7 @@ const Posts = (): React.ReactElement => {
 
 			<div className="flex gap-4 my-4">
 				{posts.map((post) => (
-					<PostCard post={post} />
+					<PostCard key={`post-card-${post.id}`} post={post} />
 				))}
 			</div>
 		</div>

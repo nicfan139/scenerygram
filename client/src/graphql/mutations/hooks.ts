@@ -1,15 +1,20 @@
 import { useMutation } from '@apollo/client';
 import { getRequestHeaders } from '@/helpers';
 import { POST_QUERY } from '../queries/typeDefs';
-import { LIKE_POST_MUTATION, UNLIKE_POST_MUTATION, ADD_COMMENT_MUTATION } from './typeDefs';
+import {
+	LIKE_POST_MUTATION,
+	UNLIKE_POST_MUTATION,
+	ADD_COMMENT_MUTATION,
+	LIKE_COMMENT_MUTATION,
+	UNLIKE_COMMENT_MUTATION
+} from './typeDefs';
 
 export const useLikePostMutation = () => {
-	const [mutate, { loading }] = useMutation(LIKE_POST_MUTATION);
+	const [mutate] = useMutation(LIKE_POST_MUTATION);
 
 	return {
-		isLoading: loading,
 		likePost: async (postId: string) => {
-			const comment = await mutate({
+			const post = await mutate({
 				context: getRequestHeaders(),
 				variables: {
 					postId
@@ -24,18 +29,17 @@ export const useLikePostMutation = () => {
 					}
 				]
 			});
-			return comment;
+			return post;
 		}
 	};
 };
 
 export const useUnlikePostMutation = () => {
-	const [mutate, { loading }] = useMutation(UNLIKE_POST_MUTATION);
+	const [mutate] = useMutation(UNLIKE_POST_MUTATION);
 
 	return {
-		isLoading: loading,
 		unlikePost: async (postId: string) => {
-			const comment = await mutate({
+			const post = await mutate({
 				context: getRequestHeaders(),
 				variables: {
 					postId
@@ -50,7 +54,7 @@ export const useUnlikePostMutation = () => {
 					}
 				]
 			});
-			return comment;
+			return post;
 		}
 	};
 };
@@ -66,6 +70,56 @@ export const useAddCommentMutation = () => {
 				variables: {
 					postId,
 					text
+				},
+				refetchQueries: [
+					{
+						query: POST_QUERY,
+						context: getRequestHeaders(),
+						variables: {
+							postId
+						}
+					}
+				]
+			});
+			return comment;
+		}
+	};
+};
+
+export const useLikeCommentMutation = () => {
+	const [mutate] = useMutation(LIKE_COMMENT_MUTATION);
+
+	return {
+		likeComment: async (commentId: string, postId: string) => {
+			const comment = await mutate({
+				context: getRequestHeaders(),
+				variables: {
+					commentId
+				},
+				refetchQueries: [
+					{
+						query: POST_QUERY,
+						context: getRequestHeaders(),
+						variables: {
+							postId
+						}
+					}
+				]
+			});
+			return comment;
+		}
+	};
+};
+
+export const useUnlikeCommentMutation = () => {
+	const [mutate] = useMutation(UNLIKE_COMMENT_MUTATION);
+
+	return {
+		unlikeComment: async (commentId: string, postId: string) => {
+			const comment = await mutate({
+				context: getRequestHeaders(),
+				variables: {
+					commentId
 				},
 				refetchQueries: [
 					{

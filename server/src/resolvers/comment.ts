@@ -30,6 +30,76 @@ export const CommentResolvers = {
 			} else {
 				throwError(`Unable to create new comment for post #${args.postId}`);
 			}
+		},
+
+		likeComment: async (
+			_root: unknown,
+			args: {
+				commentId: string;
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			const user = await UserRepository.findOneBy({
+				id: context.id
+			});
+
+			const comment = await CommentRepository.findOne({
+				where: {
+					id: args.commentId
+				},
+				relations: {
+					author: true,
+					likes: true
+				}
+			});
+
+			if (user && comment) {
+				const updatedComment = CommentRepository.merge(comment, {
+					likes: [...comment.likes, user]
+				});
+				const result = await CommentRepository.save(updatedComment);
+				return result;
+			} else {
+				throwError(`Unable to like comment`);
+			}
+		},
+
+		unlikeComment: async (
+			_root: unknown,
+			args: {
+				commentId: string;
+			},
+			context: {
+				id: string;
+			}
+		) => {
+			if (!context.id) {
+				throwError('Unauthorized');
+			}
+
+			const comment = await CommentRepository.findOne({
+				where: {
+					id: args.commentId
+				},
+				relations: {
+					author: true,
+					likes: true
+				}
+			});
+
+			if (comment) {
+				comment.likes = comment.likes.filter((user) => user.id !== context.id);
+				const result = await CommentRepository.save(comment);
+				return result;
+			} else {
+				throwError('Unable to unlike comment');
+			}
 		}
 	}
 };

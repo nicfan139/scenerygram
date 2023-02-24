@@ -14,6 +14,7 @@ type TPost = {
 	id: string;
 	imgUrl: string;
 	caption: string;
+	author: TUser;
 	likes: TUser[];
 	comments: TComment[];
 	createdAt: string;
