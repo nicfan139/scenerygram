@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Heading } from '@/components';
+import { Heading, Password } from '@/components';
 import { useUpdateUserPasswordMutaton } from '@/graphql';
 import { handleLogout } from '@/helpers';
 
@@ -66,30 +66,24 @@ const UpdatePasswordForm = (): React.ReactElement => {
 			</Heading>
 
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start">
-				<input
-					type="password"
+				<Password
 					placeholder="Current password"
-					{...register('currentPassword', {
-						required: true
-					})}
+					register={register}
+					name="currentPassword"
 					className="w-full md:w-3/4"
 				/>
 
-				<input
-					type="password"
+				<Password
 					placeholder="New password"
-					{...register('newPassword', {
-						required: true
-					})}
+					register={register}
+					name="newPassword"
 					className="w-full md:w-3/4"
 				/>
 
-				<input
-					type="password"
+				<Password
 					placeholder="Confirm new password"
-					{...register('newPasswordConfirm', {
-						required: true
-					})}
+					register={register}
+					name="newPasswordConfirm"
 					className="w-full md:w-3/4"
 				/>
 

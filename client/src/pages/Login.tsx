@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { FiMap } from 'react-icons/fi';
 import { Fade } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-import { Title, Loading } from '@/components';
+import { Title, Loading, Password } from '@/components';
 import { useScreenContext } from '@/contexts';
 import { useAuthLogin } from '@/hooks';
 
@@ -74,13 +74,7 @@ const Login = (): React.ReactElement => {
 								})}
 							/>
 
-							<input
-								type="password"
-								placeholder="Enter password"
-								{...register('password', {
-									required: true
-								})}
-							/>
+							<Password placeholder="Enter password" register={register} name="password" />
 
 							<button type="submit" className="text-xl font-semibold">
 								Submit
