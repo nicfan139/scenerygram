@@ -23,9 +23,7 @@ const Root = (): React.ReactElement => {
 
 	return (
 		<ApolloProvider client={client}>
-			{currentUser?.id && (
-				<Navbar currentUser={currentUser} />
-			)}
+			{currentUser?.id && <Navbar currentUser={currentUser} />}
 
 			<main className="w-full md:max-w-screen-lg pt-24 md:pt-0 px-4 md:px-0 md:mx-auto">
 				<Outlet />

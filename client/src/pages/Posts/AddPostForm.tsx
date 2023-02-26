@@ -38,7 +38,7 @@ const AddPostForm = ({ onClose }: IAddPostFormProps): React.ReactElement => {
 
 	return (
 		<div>
-			<Heading>
+			<Heading className="mb-6">
 				<FiPlus />
 				<h3>Add new post</h3>
 			</Heading>

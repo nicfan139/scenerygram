@@ -26,7 +26,7 @@ const Avatar = ({ imgUrl, size, className }: IAvatarProps): React.ReactElement =
 	return (
 		<div
 			className={twMerge(
-				'flex justify-center items-center border-slate-900 rounded-full',
+				'flex justify-center items-center border-slate-900 rounded-full text-slate-900',
 				size === 'small' && 'h-10 w-10 border-2 text-3xl',
 				size === 'large' && 'h-20 w-20 border-4 text-6xl',
 				className

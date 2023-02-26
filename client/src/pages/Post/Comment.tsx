@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { FiThumbsUp } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
+import { Avatar } from '@/components';
 import { useUserContext } from '@/contexts';
 import { useLikeCommentMutation, useUnlikeCommentMutation } from '@/graphql';
 
@@ -42,7 +43,11 @@ const Comment = ({ postId, comment }: ICommentProps): React.ReactElement => {
 	return (
 		<div className="mb-4 p-4 border bg-white">
 			<div className="flex justify-between items-center text-slate-400">
-				<label className="font-semibold italic">{author.username}</label>
+				<div className="flex gap-2 items-center">
+					<Avatar imgUrl={author.avatarUrl} size="small" />
+					<label className="font-semibold italic">{author.username}</label>
+				</div>
+
 				<label className="italic">{dayjs(createdAt).format('DD/MM/YYYY h:mm a')}</label>
 			</div>
 
