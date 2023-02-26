@@ -15,11 +15,11 @@ const Modal = ({ isOpen, onClose, children }: IModalProps): ReactElement => (
 			isOpen && 'z-50 opacity-100'
 		)}
 	>
-		<div className="relative overflow-y-auto h-full max-h-screen md:h-auto w-full max-w-xl py-6 px-4 bg-white">
+		<div className="relative overflow-y-auto h-full max-h-screen md:h-auto w-full md:max-w-xl py-6 px-4 bg-white">
 			<button
 				type="button"
 				onClick={onClose}
-				className="absolute top-4 right-4 border-0 p-0 text-2xl text-slate-900 bg-transparent"
+				className="absolute top-4 right-4 border-0 p-0 text-3xl md:text-2xl text-slate-900 bg-transparent"
 			>
 				<FiX />
 			</button>
