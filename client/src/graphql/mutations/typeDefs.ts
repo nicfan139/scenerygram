@@ -1,6 +1,39 @@
 import { gql } from '@apollo/client';
 import { COMMENT_LIKE_FRAGMENT, POST_LIKE_FRAGMENT } from './fragments';
 
+export const UPDATE_USER_MUTATION = gql`
+	mutation UpdateUserMutation($userId: ID!, $input: UpdateUserInput!) {
+		user: updateUser(userId: $userId, input: $input) {
+			id
+			firstName
+			lastName
+			username
+			avatarUrl
+			posts {
+				id
+				imgUrl
+				caption
+				createdAt
+			}
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const UPDATE_USER_PASSWORD_MUTATION = gql`
+	mutation UpdateUserPasswordMutation($input: UpdatePasswordInput!) {
+		user: updateUserPassword(input: $input) {
+			id
+			firstName
+			lastName
+			username
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
 export const ADD_POST_MUTATION = gql`
 	mutation AddPostMutation($input: AddPostInput!) {
 		post: addPost(input: $input) {

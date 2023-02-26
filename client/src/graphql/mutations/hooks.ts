@@ -2,6 +2,8 @@ import { useMutation } from '@apollo/client';
 import { getRequestHeaders } from '@/helpers';
 import { POSTS_QUERY, POST_QUERY } from '../queries/typeDefs';
 import {
+	UPDATE_USER_MUTATION,
+	UPDATE_USER_PASSWORD_MUTATION,
 	ADD_POST_MUTATION,
 	LIKE_POST_MUTATION,
 	UNLIKE_POST_MUTATION,
@@ -9,6 +11,44 @@ import {
 	LIKE_COMMENT_MUTATION,
 	UNLIKE_COMMENT_MUTATION
 } from './typeDefs';
+
+export const useUpdateUserMutaton = () => {
+	const [mutate, { loading }] = useMutation(UPDATE_USER_MUTATION);
+
+	return {
+		isLoading: loading,
+		updateUser: async (
+			userId: string,
+			input: { firstName: string; lastName: string; username: string; avatarUrl: string }
+		) => {
+			const user = await mutate({
+				context: getRequestHeaders(),
+				variables: {
+					userId,
+					input
+				}
+			});
+			return user;
+		}
+	};
+};
+
+export const useUpdateUserPasswordMutaton = () => {
+	const [mutate, { loading }] = useMutation(UPDATE_USER_PASSWORD_MUTATION);
+
+	return {
+		isLoading: loading,
+		updatePassword: async (input: { currentPassword: string; newPassword: string }) => {
+			const user = await mutate({
+				context: getRequestHeaders(),
+				variables: {
+					input
+				}
+			});
+			return user;
+		}
+	};
+};
 
 export const useAddPostMutation = () => {
 	const [mutate, { loading }] = useMutation(ADD_POST_MUTATION);

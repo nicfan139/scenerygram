@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
-import { FiMap } from 'react-icons/fi';
-import { useUserContext } from '@/contexts';
+import { FiMap, FiChevronRight } from 'react-icons/fi';
+import { useScreenContext, useUserContext } from '@/contexts';
 import { getAccessToken, handleLogout } from '@/helpers';
 import { client } from '@/graphql';
 import { Avatar } from '@/components';
@@ -11,6 +11,7 @@ const Root = (): React.ReactElement => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { currentUser } = useUserContext();
+	const { isDesktop } = useScreenContext();
 
 	useEffect(() => {
 		if (getAccessToken()) {
@@ -34,20 +35,29 @@ const Root = (): React.ReactElement => {
 						<h1>Scenerygram</h1>
 					</Link>
 
-					<div className="relative md:absolute md:top-3 md:right-4 flex gap-6 items-center">
-						<Link to="/profile" className="flex gap-2 items-center text-white hover:text-white">
-							<Avatar imgUrl={currentUser.avatarUrl} size="small" className="border-white" />
-							<label>Profile</label>
-						</Link>
+					{isDesktop && (
+						<div className="absolute top-3 right-4 flex gap-6 items-center">
+							<Link to="/profile" className="flex gap-2 items-center text-white hover:text-white">
+								<Avatar imgUrl={currentUser.avatarUrl} size="small" className="border-white" />
 
-						<button
-							type="button"
-							onClick={handleLogout}
-							className="border-white text-white hover:text-black hover:bg-white hover:border-white"
-						>
-							Logout
-						</button>
-					</div>
+								<div className="flex flex-col">
+									<label>{currentUser.username}</label>
+									<label className="flex items-center -ml-1 text-sm">
+										<FiChevronRight />
+										My Profile
+									</label>
+								</div>
+							</Link>
+
+							<button
+								type="button"
+								onClick={handleLogout}
+								className="border-white text-white hover:text-black hover:bg-white hover:border-white"
+							>
+								Logout
+							</button>
+						</div>
+					)}
 				</nav>
 			)}
 

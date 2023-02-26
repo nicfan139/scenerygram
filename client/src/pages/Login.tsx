@@ -35,7 +35,6 @@ const Login = (): React.ReactElement => {
 			const response = await authLogin.mutateAsync(data);
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data);
 				localStorage.setItem('scenerygram-accessToken', data.accessToken);
 				window.location.href = '/posts';
 			} else {
@@ -94,7 +93,7 @@ const Login = (): React.ReactElement => {
 			{isDesktop && (
 				<Fade autoplay duration={3000} arrows={false} cssClass="h-screen w-[calc(100vw-400px)]">
 					{images.map((imgUrl) => (
-						<img src={imgUrl} alt={imgUrl} className="h-screen object-cover" />
+						<img key={imgUrl} src={imgUrl} alt={imgUrl} className="h-screen object-cover" />
 					))}
 				</Fade>
 			)}

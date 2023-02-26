@@ -81,7 +81,8 @@ router.post('/validate_token', async (req: Request, res: Response) => {
 					username: user.username,
 					avatarUrl: user.avatarUrl,
 					posts: user.posts,
-					createdAt: user.createdAt
+					createdAt: user.createdAt,
+					updatedAt: user.updatedAt
 				}
 			});
 		} else {

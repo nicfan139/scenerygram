@@ -54,8 +54,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }): Reac
 		return <LoadingScreen message="Validating credentials" />;
 	}
 
-	console.log('currentUser: ', currentUser);
-
 	return (
 		<UserContext.Provider
 			value={{

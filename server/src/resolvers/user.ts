@@ -80,8 +80,13 @@ export const UserResolvers = {
 				throwError('Unauthorized');
 			}
 
-			const user = await UserRepository.findOneBy({
-				id: args.userId
+			const user = await UserRepository.findOne({
+				where: {
+					id: args.userId
+				},
+				relations: {
+					posts: true
+				}
 			});
 
 			if (user) {
