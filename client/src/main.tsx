@@ -39,7 +39,7 @@ const router = createBrowserRouter([
 		element: <Register />
 	}
 ], {
-	basename: "/"
+	basename: "/dist"
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
