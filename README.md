@@ -4,6 +4,15 @@ A social app (like Instagram) for sharing picturesque scenery. Built for fun.
 
 Photos courtesy of [Unsplash](https://unsplash.com/).
 
+## Demo
+
+You can go to the [site](https://scenerygram.vercel.app/) and use the following test credentials:
+
+```
+USERNAME=test123
+PASSWORD=test123
+```
+
 ## Tech stack
 
 Client:
