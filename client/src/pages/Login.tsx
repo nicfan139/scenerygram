@@ -83,7 +83,7 @@ const Login = (): React.ReactElement => {
 						</form>
 
 						<p className="my-8">
-							Already have an account? <Link to="/register">Register here</Link>
+							Don't have an account? <Link to="/register">Register here</Link>
 						</p>
 					</>
 				)}
