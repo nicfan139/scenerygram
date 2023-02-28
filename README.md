@@ -1,8 +1,20 @@
 # Scenerygram
 
-A social app for sharing picturesque scenery (and scenery only).
+A social app (like Instagram) for sharing picturesque scenery. Built for fun.
 
 ## Tech stack
+
+Client:
+- React
+- TypeScript
+- Context API
+- Tailwind CSS
+- GraphQL
+- Apollo Client
+- React Query
+- React Hook Form
+- Vite
+- Vercel
 
 Server:
 
@@ -13,7 +25,7 @@ Server:
 - Apollo Server
 - TypeORM
 - PostgreSQL
-- Heroku
+- Fly.io
 - Neon
 
 ## Authors
