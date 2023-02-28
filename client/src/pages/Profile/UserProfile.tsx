@@ -57,7 +57,7 @@ const UserProfile = (): React.ReactElement => {
         )}
       </section>
 
-      <section className='p-4 bg-white border'>
+      <section className='mb-8 p-4 bg-white border'>
         <Heading>
           <FiMessageCircle />
           <h3>Recent comments</h3>
@@ -73,10 +73,10 @@ const UserProfile = (): React.ReactElement => {
             {comments.map(({ id, text, likes, post, createdAt }) => (
               <div
                 key={`user-profile-comment-${id}`}
-                className="flex justify-between items-center py-2 px-4 border"
+                className="flex flex-col md:flex-row justify-between items-center py-2 px-4 border"
               >
-                <div>
-                  <p className='mb-1'>"{text}"</p>
+                <div className='w-full md:w-auto flex flex-row justify-between md:flex-col mb-4 md:mb-0'>
+                  <p className='mb-1 text-base md:text-lg'>"{text}"</p>
 
                   <p title="Likes" className='flex gap-1 items-center'>
                     <FiThumbsUp />
@@ -84,15 +84,15 @@ const UserProfile = (): React.ReactElement => {
                   </p>
                 </div>
 
-                <Link to={`/posts/${post.id}`} title="Go to post" className='flex gap-2 items-center'>
-                  <div className='flex flex-col items-end text-slate-500'>
+                <Link to={`/posts/${post.id}`} title="Go to post" className='flex flex-col md:flex-row gap-2 items-center text-sm md:text-base'>
+                  <div className='flex flex-col items-center md:items-end text-slate-500'>
                     <p>in <i>{post.caption}</i></p>
                     <p>at {dayjs(createdAt).format('DD/MM/YYYY h:mm a')}</p>
                   </div>
                   <img
                     src={post.imgUrl}
                     alt={post.imgUrl}
-                    className="h-20 w-36 object-cover"
+                    className="h-32 md:h-20 w-full md:w-36 object-cover"
                   />
                 </Link>
               </div>
