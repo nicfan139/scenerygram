@@ -11,6 +11,7 @@ import { AppDataSource } from './typeOrm';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 import authRoutes from './routes/auth';
+import userRoutes from './routes/user';
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ const server = async () => {
 	);
 
 	app.use('/api/auth', authRoutes);
+	app.use('/api/users', userRoutes);
 
 	const getHttpContext = ({ req }: { req: Request }) => {
 		if (req.auth) {

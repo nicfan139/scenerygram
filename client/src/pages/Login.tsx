@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FiMap } from 'react-icons/fi';
@@ -80,6 +81,10 @@ const Login = (): React.ReactElement => {
 								Submit
 							</button>
 						</form>
+
+						<p className="my-8">
+							Already have an account? <Link to="/register">Register here</Link>
+						</p>
 					</>
 				)}
 			</div>

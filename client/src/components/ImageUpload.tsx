@@ -24,6 +24,7 @@ const ImageUpload = ({ setUploadedImg, uploadedImg }: IImageUploadProps): ReactE
 							uploadPreset: string;
 							sources: string[];
 							multiple: boolean;
+							maxImageFileSize: number;
 							folder: string;
 						},
 						callback: (err: unknown, result: { event: 'success'; info: { url: string } }) => void
@@ -36,6 +37,7 @@ const ImageUpload = ({ setUploadedImg, uploadedImg }: IImageUploadProps): ReactE
 				uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET_NAME,
 				sources: ['local', 'url'],
 				multiple: false,
+				maxImageFileSize: 1000000,
 				folder: import.meta.env.VITE_CLOUDINARY_FOLDER
 			},
 			(err, result) => {

@@ -75,25 +75,29 @@ const Profile = (): React.ReactElement => {
 								<h3>My posts</h3>
 							</Heading>
 
-							<div>
-								{currentUser.posts.map(({ id, imgUrl, caption, createdAt }) => (
-									<Link
-										key={`profile-post-${id}`}
-										to={`/posts/${id}`}
-										className="flex justify-between items-center my-2 px-4 py-2 border"
-									>
-										<div className="flex flex-col">
-											<label>{caption}</label>
+							{currentUser.posts.length === 0 ? (
+								<p className="text-slate-500 italic">No posts to display</p>
+							) : (
+								<div>
+									{currentUser.posts.map(({ id, imgUrl, caption, createdAt }) => (
+										<Link
+											key={`profile-post-${id}`}
+											to={`/posts/${id}`}
+											className="flex justify-between items-center my-2 px-4 py-2 border"
+										>
+											<div className="flex flex-col">
+												<label>{caption}</label>
 
-											<label className="text-slate-500">
-												{dayjs(createdAt).format('DD/MM/YYYY')}
-											</label>
-										</div>
+												<label className="text-slate-500">
+													{dayjs(createdAt).format('DD/MM/YYYY')}
+												</label>
+											</div>
 
-										<img src={imgUrl} alt={imgUrl} className="h-24 w-40 object-cover" />
-									</Link>
-								))}
-							</div>
+											<img src={imgUrl} alt={imgUrl} className="h-24 w-40 object-cover" />
+										</Link>
+									))}
+								</div>
+							)}
 						</div>
 					</>
 				) : (

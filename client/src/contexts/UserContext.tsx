@@ -44,8 +44,10 @@ export const UserContextProvider = ({ children }: { children: ReactNode }): Reac
 		if (ACCESS_TOKEN) {
 			verifyToken();
 		} else {
-			if (window.location.pathname !== '/login') {
-				window.location.href = '/login';
+			const { location } = window;
+			const PUBLIC_ROUTES = ['/login', '/register'];
+			if (!PUBLIC_ROUTES.includes(location.pathname)) {
+				location.href = '/login';
 			}
 		}
 	}, []);
