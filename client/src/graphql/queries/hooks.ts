@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { getRequestHeaders } from '@/helpers';
-import { POSTS_QUERY, POST_QUERY } from './typeDefs';
+import { POSTS_QUERY, POST_QUERY, USER_QUERY } from './typeDefs';
 
 export const usePostsQuery = () => {
 	const { loading, data } = useQuery<{ posts: TPost[] }>(POSTS_QUERY, {
@@ -24,5 +24,19 @@ export const usePostQuery = (postId: string) => {
 	return {
 		isLoading: loading,
 		post: data?.post
+	};
+};
+
+export const useUserQuery = (userId: string) => {
+	const { loading, data } = useQuery<{ user: TUser }>(USER_QUERY, {
+		context: getRequestHeaders(),
+		variables: {
+			userId
+		}
+	});
+
+	return {
+		isLoading: loading,
+		user: data?.user
 	};
 };

@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import { Avatar } from '@/components';
 import { useUserContext } from '@/contexts';
 import { useLikeCommentMutation, useUnlikeCommentMutation } from '@/graphql';
+import { Link } from 'react-router-dom';
 
 interface ICommentProps {
 	postId: string;
@@ -45,7 +46,12 @@ const Comment = ({ postId, comment }: ICommentProps): React.ReactElement => {
 			<div className="flex justify-between items-center text-slate-400">
 				<div className="flex gap-2 items-center">
 					<Avatar imgUrl={author.avatarUrl} size="small" />
-					<label className="font-semibold italic">{author.username}</label>
+					<Link
+						to={author.id === currentUser?.id ? '/profile' : `/users/${author.id}`}
+						className="font-semibold italic"
+					>
+						{author.username}
+					</Link>
 				</div>
 
 				<label className="italic">{dayjs(createdAt).format('DD/MM/YYYY h:mm a')}</label>

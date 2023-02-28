@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FiChevronLeft } from 'react-icons/fi';
+import { FiUser, FiImage } from 'react-icons/fi';
 import dayjs from 'dayjs';
-import { Loading, Title, Modal, Heading, Avatar } from '@/components';
+import { Loading, BackLink, Title, Modal, Heading, Avatar } from '@/components';
 import { useUserContext } from '@/contexts';
-import UpdateUserForm from './UpdateUserForm';
-import UpdatePasswordForm from './UpdatePasswordForm';
+import { UpdateUserForm, UpdatePasswordForm, PostBox } from './components';
 
-const Profile = (): React.ReactElement => {
+const MyProfile = (): React.ReactElement => {
 	const { currentUser } = useUserContext();
 
 	const [showUpdateUser, toggleUpdateUser] = useState<boolean>(false);
@@ -15,12 +13,7 @@ const Profile = (): React.ReactElement => {
 
 	return (
 		<div>
-			<div className="mb-4">
-				<Link to="/posts" className="flex gap-1 items-center">
-					<FiChevronLeft />
-					Back to posts
-				</Link>
-			</div>
+			<BackLink to={'/posts'} label="Back to posts" />
 
 			<Title>
 				<h2>My Profile</h2>
@@ -39,6 +32,7 @@ const Profile = (): React.ReactElement => {
 
 						<div className="w-full">
 							<Heading>
+								<FiUser />
 								<h3>Details</h3>
 							</Heading>
 
@@ -72,29 +66,19 @@ const Profile = (): React.ReactElement => {
 
 						<div className="w-full">
 							<Heading>
+								<FiImage />
 								<h3>My posts</h3>
+								<p className='text-xl'>
+									({currentUser.posts.length})
+								</p>
 							</Heading>
 
 							{currentUser.posts.length === 0 ? (
 								<p className="text-slate-500 italic">No posts to display</p>
 							) : (
 								<div>
-									{currentUser.posts.map(({ id, imgUrl, caption, createdAt }) => (
-										<Link
-											key={`profile-post-${id}`}
-											to={`/posts/${id}`}
-											className="flex justify-between items-center my-2 px-4 py-2 border"
-										>
-											<div className="flex flex-col">
-												<label>{caption}</label>
-
-												<label className="text-slate-500">
-													{dayjs(createdAt).format('DD/MM/YYYY')}
-												</label>
-											</div>
-
-											<img src={imgUrl} alt={imgUrl} className="h-24 w-40 object-cover" />
-										</Link>
+									{currentUser.posts.map((post) => (
+										<PostBox key={`my-profile-post-${post.id}`} post={post} />
 									))}
 								</div>
 							)}
@@ -108,4 +92,4 @@ const Profile = (): React.ReactElement => {
 	);
 };
 
-export default Profile;
+export default MyProfile;

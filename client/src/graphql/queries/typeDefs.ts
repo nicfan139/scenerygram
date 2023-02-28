@@ -62,3 +62,34 @@ export const POST_QUERY = gql`
 		}
 	}
 `;
+
+export const USER_QUERY = gql`
+	query UserQuery($userId: ID!) {
+		user: user(userId: $userId) {
+			id
+			firstName
+			lastName
+			username
+			avatarUrl
+			posts {
+				id
+				imgUrl
+				caption
+			}
+			comments {
+				id
+				text
+				post {
+					id
+					imgUrl
+					caption
+				}
+				likes {
+					id
+				}
+				createdAt
+			}
+			createdAt
+		}
+	}
+`;

@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { FiChevronLeft, FiThumbsUp, FiCopy, FiMessageCircle } from 'react-icons/fi';
+import { FiThumbsUp, FiCopy, FiMessageCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'react-toastify';
-import { Loading, Title } from '@/components';
+import { BackLink, Loading, Title } from '@/components';
 import { useUserContext } from '@/contexts';
 import { usePostQuery, useLikePostMutation, useUnlikePostMutation } from '@/graphql';
 import AddCommentInput from './AddCommentInput';
@@ -46,12 +46,7 @@ const Post = (): React.ReactElement => {
 
 	return (
 		<div>
-			<div className="mb-4">
-				<Link to="/posts" className="flex gap-1 items-center">
-					<FiChevronLeft />
-					Back to posts
-				</Link>
-			</div>
+			<BackLink to="/posts" label="Back to posts" />
 
 			{isLoadingPost || !post ? (
 				<div className="w-full flex justify-center">
@@ -68,7 +63,9 @@ const Post = (): React.ReactElement => {
 
 						<div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
 							<div className="flex flex-col">
-								<p className="font-semibold">Posted by {post.author.username}</p>
+								<p className="font-semibold">
+									Posted by <Link to={post.author.id === currentUser?.id ? '/profile' : `/users/${post.author.id}`}>{post.author.username}</Link>
+								</p>
 								<p className="italic">on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
 							</div>
 
@@ -100,8 +97,6 @@ const Post = (): React.ReactElement => {
 								</button>
 							</div>
 						</div>
-
-						{/* TODO: Add similar posts */}
 					</div>
 
 					<div className="w-full md:w-2/5 overflow-y-auto">
