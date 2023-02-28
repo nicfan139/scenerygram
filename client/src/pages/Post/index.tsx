@@ -1,11 +1,21 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { FiMapPin, FiThumbsUp, FiCopy, FiMessageCircle } from 'react-icons/fi';
+import {
+	FiMapPin,
+	FiUser,
+	FiCalendar,
+	FiThumbsUp,
+	FiCopy,
+	FiEdit,
+	FiMessageCircle
+} from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'react-toastify';
 import { BackLink, Loading, Title } from '@/components';
 import { useUserContext } from '@/contexts';
 import { usePostQuery, useLikePostMutation, useUnlikePostMutation } from '@/graphql';
+import EditPostForm from './EditPostForm';
 import AddCommentInput from './AddCommentInput';
 import Comment from './Comment';
 
@@ -15,6 +25,8 @@ const Post = (): React.ReactElement => {
 	const { isLoading: isLoadingPost, post } = usePostQuery(postId as string);
 	const { likePost } = useLikePostMutation();
 	const { unlikePost } = useUnlikePostMutation();
+
+	const [showEditPost, toggleEditPost] = useState<boolean>(false);
 
 	const onLikePost = async () => {
 		try {
@@ -70,17 +82,21 @@ const Post = (): React.ReactElement => {
 
 						<div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
 							<div className="flex flex-col text-slate-500">
-								<p className="font-semibold">
-									Posted by{' '}
+								<p className="flex gap-2 items-center font-semibold">
+									<FiUser />
 									<Link
 										to={
 											post.author.id === currentUser?.id ? '/profile' : `/users/${post.author.id}`
 										}
 									>
-										{post.author.username}
+										Posted by {post.author.username}
 									</Link>
 								</p>
-								<p className="italic">on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
+
+								<p className="flex gap-2 items-center italic">
+									<FiCalendar />
+									{dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}
+								</p>
 							</div>
 
 							<div className="flex gap-2">
@@ -109,6 +125,26 @@ const Post = (): React.ReactElement => {
 									<FiCopy />
 									Share
 								</button>
+
+								{post.author.id === currentUser?.id && (
+									<>
+										<button
+											type="button"
+											title="Edit post"
+											onClick={() => toggleEditPost(true)}
+											className="flex gap-2 items-center"
+										>
+											<FiEdit />
+											Edit
+										</button>
+
+										<EditPostForm
+											post={post}
+											isOpen={showEditPost}
+											onClose={() => toggleEditPost(false)}
+										/>
+									</>
+								)}
 							</div>
 						</div>
 					</div>

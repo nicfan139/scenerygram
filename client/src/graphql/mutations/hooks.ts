@@ -5,6 +5,7 @@ import {
 	UPDATE_USER_MUTATION,
 	UPDATE_USER_PASSWORD_MUTATION,
 	ADD_POST_MUTATION,
+	UPDATE_POST_MUTATION,
 	LIKE_POST_MUTATION,
 	UNLIKE_POST_MUTATION,
 	ADD_COMMENT_MUTATION,
@@ -65,6 +66,40 @@ export const useAddPostMutation = () => {
 					{
 						query: POSTS_QUERY,
 						context: getRequestHeaders()
+					}
+				]
+			});
+			return post;
+		}
+	};
+};
+
+export const useUpdatePostMutation = () => {
+	const [mutate, { loading }] = useMutation(UPDATE_POST_MUTATION);
+
+	return {
+		isLoading: loading,
+		updatePost: async (
+			postId: string,
+			input: { imgUrl: string; caption: string; location?: string }
+		) => {
+			const post = await mutate({
+				context: getRequestHeaders(),
+				variables: {
+					postId,
+					input
+				},
+				refetchQueries: [
+					{
+						query: POSTS_QUERY,
+						context: getRequestHeaders()
+					},
+					{
+						query: POST_QUERY,
+						context: getRequestHeaders(),
+						variables: {
+							postId
+						}
 					}
 				]
 			});

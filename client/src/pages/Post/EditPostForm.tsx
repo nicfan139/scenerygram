@@ -1,40 +1,47 @@
 import { useForm } from 'react-hook-form';
 import GoogleAutocomplete from 'react-google-autocomplete';
 import { toast } from 'react-toastify';
-import { FiMapPin, FiPlus } from 'react-icons/fi';
+import { FiMapPin, FiEdit } from 'react-icons/fi';
 import { Modal, Heading, ImageUpload } from '@/components';
 import { useUserContext } from '@/contexts';
-import { useAddPostMutation } from '@/graphql';
+import { useUpdatePostMutation } from '@/graphql';
 import { ChangeEvent } from 'react';
 
-interface IAddPostFormProps {
+interface IEditPostFormProps {
+	post: TPost;
 	isOpen: boolean;
 	onClose: () => void;
 }
 
-interface IAddPostForm {
+interface IEditPostForm {
 	imgUrl: string;
 	caption: string;
 	location: string;
 }
 
-const AddPostForm = ({ isOpen, onClose }: IAddPostFormProps): React.ReactElement => {
+const EditPostForm = ({ post, isOpen, onClose }: IEditPostFormProps): React.ReactElement => {
 	const { currentUser } = useUserContext();
-	const { handleSubmit, setValue, register, watch } = useForm<IAddPostForm>();
+	const { handleSubmit, setValue, register, watch } = useForm<IEditPostForm>({
+		defaultValues: {
+			imgUrl: post.imgUrl,
+			caption: post.caption,
+			location: post.location
+		}
+	});
 
-	const { isLoading, addPost } = useAddPostMutation();
+	const { isLoading, updatePost } = useUpdatePostMutation();
 
-	const onSubmit = async (data: IAddPostForm) => {
+	const onSubmit = async (data: IEditPostForm) => {
 		try {
-			const response = await addPost(data);
+			const response = await updatePost(post.id, data);
 			if (response.data.post) {
 				onClose();
-				toast('Successfully created new post');
+				toast('Successfully updated post');
 			}
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
 			console.log(error);
-			toast('Unable to add post');
+			toast('Unable to update post');
 		}
 	};
 
@@ -44,8 +51,8 @@ const AddPostForm = ({ isOpen, onClose }: IAddPostFormProps): React.ReactElement
 	return (
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<Heading className="mb-6">
-				<FiPlus />
-				<h3>Add new post</h3>
+				<FiEdit />
+				<h3>Edit post</h3>
 			</Heading>
 
 			<form onSubmit={handleSubmit(onSubmit)}>
@@ -67,6 +74,7 @@ const AddPostForm = ({ isOpen, onClose }: IAddPostFormProps): React.ReactElement
 						setValue('location', place.formatted_address)
 					}
 					onChange={(e: ChangeEvent<HTMLInputElement>) => setValue('location', e.target.value)}
+					defaultValue={FORM_STATE.location}
 					className="w-full mb-6"
 				/>
 
@@ -99,4 +107,4 @@ const AddPostForm = ({ isOpen, onClose }: IAddPostFormProps): React.ReactElement
 	);
 };
 
-export default AddPostForm;
+export default EditPostForm;

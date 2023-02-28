@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
-import { LoadingScreen, Modal, Title } from '@/components';
+import { LoadingScreen, Title } from '@/components';
 import { useUserContext } from '@/contexts';
 import { usePostsQuery } from '@/graphql';
 import PostCard from './PostCard';
@@ -33,9 +33,7 @@ const Posts = (): React.ReactElement => {
 				</button>
 			</div>
 
-			<Modal isOpen={showAddPost} onClose={() => toggleAddPost(false)}>
-				<AddPostForm onClose={() => toggleAddPost(false)} />
-			</Modal>
+			<AddPostForm isOpen={showAddPost} onClose={() => toggleAddPost(false)} />
 
 			<div className="flex flex-wrap gap-6 md:gap-4 my-4">
 				{posts.map((post) => (

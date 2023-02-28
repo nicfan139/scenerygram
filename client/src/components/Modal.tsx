@@ -24,7 +24,7 @@ const Modal = ({ isOpen, onClose, children }: IModalProps): ReactElement => (
 				<FiX />
 			</button>
 
-			{isOpen && children}
+			{children}
 		</div>
 	</div>
 );

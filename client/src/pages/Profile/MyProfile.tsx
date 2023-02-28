@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FiUser, FiImage } from 'react-icons/fi';
 import dayjs from 'dayjs';
-import { Loading, BackLink, Title, Modal, Heading, Avatar } from '@/components';
+import { Loading, BackLink, Title, Heading, Avatar } from '@/components';
 import { useUserContext } from '@/contexts';
 import { UpdateUserForm, UpdatePasswordForm, PostBox } from './components';
 
@@ -22,13 +22,12 @@ const MyProfile = (): React.ReactElement => {
 			<section className="h-auto w-full flex flex-col md:flex-row gap-8 md:gap-4 p-6 bg-white shadow-md">
 				{currentUser ? (
 					<>
-						<Modal isOpen={showUpdateUser} onClose={() => toggleUpdateUser(false)}>
-							<UpdateUserForm onClose={() => toggleUpdateUser(false)} />
-						</Modal>
+						<UpdateUserForm isOpen={showUpdateUser} onClose={() => toggleUpdateUser(false)} />
 
-						<Modal isOpen={showUpdatePassword} onClose={() => toggleUpdatePassword(false)}>
-							<UpdatePasswordForm />
-						</Modal>
+						<UpdatePasswordForm
+							isOpen={showUpdatePassword}
+							onClose={() => toggleUpdatePassword(false)}
+						/>
 
 						<div className="w-full">
 							<Heading>

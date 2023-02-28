@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Heading, Password } from '@/components';
+import { Modal, Heading, Password } from '@/components';
 import { useUpdateUserPasswordMutaton } from '@/graphql';
 import { handleLogout } from '@/helpers';
+
+interface IUpdatePasswordFormProps {
+	isOpen: boolean;
+	onClose: () => void;
+}
 
 interface IUpdatePasswordForm {
 	currentPassword: string;
@@ -11,7 +16,7 @@ interface IUpdatePasswordForm {
 	newPasswordConfirm: string;
 }
 
-const UpdatePasswordForm = (): React.ReactElement => {
+const UpdatePasswordForm = ({ isOpen, onClose }: IUpdatePasswordFormProps): React.ReactElement => {
 	const { handleSubmit, register } = useForm<IUpdatePasswordForm>({
 		defaultValues: {
 			currentPassword: '',
@@ -60,7 +65,7 @@ const UpdatePasswordForm = (): React.ReactElement => {
 	}
 
 	return (
-		<div>
+		<Modal isOpen={isOpen} onClose={onClose}>
 			<Heading>
 				<h4>Update your password</h4>
 			</Heading>
@@ -91,7 +96,7 @@ const UpdatePasswordForm = (): React.ReactElement => {
 					Submit
 				</button>
 			</form>
-		</div>
+		</Modal>
 	);
 };
 

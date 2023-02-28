@@ -111,7 +111,14 @@ export const PostResolvers = {
 				throwError('Unauthorized');
 			}
 
-			const post = await PostRepository.findOneBy({ id: args.postId });
+			const post = await PostRepository.findOne({
+				where: {
+					id: args.postId
+				},
+				relations: {
+					author: true
+				}
+			});
 
 			if (post) {
 				const updatedPost = PostRepository.merge(post, args.input);

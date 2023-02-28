@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Avatar, Heading, ImageUpload } from '@/components';
+import { Modal, Avatar, Heading, ImageUpload } from '@/components';
 import { useUserContext } from '@/contexts';
 import { useUpdateUserMutaton } from '@/graphql';
 
 interface IUpdateUserFormProps {
+	isOpen: boolean;
 	onClose: () => void;
 }
 
@@ -15,7 +16,7 @@ interface IUpdateUserForm {
 	avatarUrl: string;
 }
 
-const UpdateUserForm = ({ onClose }: IUpdateUserFormProps): React.ReactElement => {
+const UpdateUserForm = ({ isOpen, onClose }: IUpdateUserFormProps): React.ReactElement => {
 	const { currentUser, setCurrentUser } = useUserContext();
 	const { handleSubmit, watch, register, setValue } = useForm<IUpdateUserForm>({
 		defaultValues: {
@@ -45,7 +46,7 @@ const UpdateUserForm = ({ onClose }: IUpdateUserFormProps): React.ReactElement =
 	const FORM_STATE = watch();
 
 	return (
-		<div>
+		<Modal isOpen={isOpen} onClose={onClose}>
 			<Heading>
 				<h4>Update your details</h4>
 			</Heading>
@@ -98,7 +99,7 @@ const UpdateUserForm = ({ onClose }: IUpdateUserFormProps): React.ReactElement =
 					Submit
 				</button>
 			</form>
-		</div>
+		</Modal>
 	);
 };
 

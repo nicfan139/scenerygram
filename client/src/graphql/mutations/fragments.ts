@@ -1,5 +1,18 @@
 import { gql } from '@apollo/client';
 
+export const POST_DETAIL_FRAGMENT = gql`
+	fragment PostDetail on Post {
+		id
+		imgUrl
+		caption
+		location
+		author {
+			id
+			username
+		}
+	}
+`;
+
 export const POST_LIKE_FRAGMENT = gql`
 	fragment PostLikeDetail on Post {
 		id
