@@ -4,6 +4,7 @@
 		"name": "Nicolas Fan",
 		"email": "nicfan@gmail.com"
 	},
+	"homepage": "https://scenerygram.vercel.app/",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
