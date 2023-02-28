@@ -21,13 +21,19 @@ export class Post {
 		type: 'text',
 		nullable: false
 	})
+	imgUrl!: string;
+
+	@Column({
+		type: 'text',
+		nullable: false
+	})
 	caption!: string;
 
 	@Column({
 		type: 'text',
 		nullable: true
 	})
-	imgUrl!: string;
+	location!: string;
 
 	@CreateDateColumn({
 		type: 'timestamptz',

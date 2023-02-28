@@ -25,6 +25,7 @@ Client:
 - React Query
 - React Hook Form
 - Cloudinary
+- Google Places API
 - Vite
 - Vercel
 

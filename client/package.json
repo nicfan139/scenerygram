@@ -19,6 +19,7 @@
 		"graphql": "^16.6.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-google-autocomplete": "^2.7.3",
 		"react-hook-form": "^7.43.2",
 		"react-icons": "^4.7.1",
 		"react-query": "^3.39.3",

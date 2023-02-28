@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { FiThumbsUp, FiCopy, FiMessageCircle } from 'react-icons/fi';
+import { FiMapPin, FiThumbsUp, FiCopy, FiMessageCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'react-toastify';
 import { BackLink, Loading, Title } from '@/components';
@@ -55,16 +55,30 @@ const Post = (): React.ReactElement => {
 			) : (
 				<div className="flex gap-6 flex-col md:flex-row">
 					<div className="w-full md:w-3/5">
-						<Title>
+						<Title className="mb-2">
 							<h2>{post.caption}</h2>
 						</Title>
+
+						{post.location && (
+							<p className="flex gap-2 items-center mb-2 text-lg text-slate-500">
+								<FiMapPin />
+								{post.location}
+							</p>
+						)}
 
 						<img src={post.imgUrl} alt={post.id} className="h-auto w-full object-contain mb-4" />
 
 						<div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-4">
-							<div className="flex flex-col">
+							<div className="flex flex-col text-slate-500">
 								<p className="font-semibold">
-									Posted by <Link to={post.author.id === currentUser?.id ? '/profile' : `/users/${post.author.id}`}>{post.author.username}</Link>
+									Posted by{' '}
+									<Link
+										to={
+											post.author.id === currentUser?.id ? '/profile' : `/users/${post.author.id}`
+										}
+									>
+										{post.author.username}
+									</Link>
 								</p>
 								<p className="italic">on {dayjs(post.createdAt).format('DD/MM/YYYY h:mm a')}</p>
 							</div>

@@ -68,9 +68,7 @@ const MyProfile = (): React.ReactElement => {
 							<Heading>
 								<FiImage />
 								<h3>My posts</h3>
-								<p className='text-xl'>
-									({currentUser.posts.length})
-								</p>
+								<p className="text-xl">({currentUser.posts.length})</p>
 							</Heading>
 
 							{currentUser.posts.length === 0 ? (

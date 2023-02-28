@@ -1,11 +1,10 @@
 import { gql } from '@apollo/client';
+import { POST_FRAGMENT } from './fragments';
 
 export const POSTS_QUERY = gql`
 	query PostsQuery {
 		posts {
-			id
-			imgUrl
-			caption
+			...PostDetail
 			author {
 				id
 				username
@@ -19,18 +18,15 @@ export const POSTS_QUERY = gql`
 			comments {
 				id
 			}
-			createdAt
-			updatedAt
 		}
 	}
+	${POST_FRAGMENT}
 `;
 
 export const POST_QUERY = gql`
 	query PostQuery($postId: ID!) {
 		post: post(postId: $postId) {
-			id
-			imgUrl
-			caption
+			...PostDetail
 			author {
 				id
 				username
@@ -57,10 +53,9 @@ export const POST_QUERY = gql`
 				createdAt
 				updatedAt
 			}
-			createdAt
-			updatedAt
 		}
 	}
+	${POST_FRAGMENT}
 `;
 
 export const USER_QUERY = gql`

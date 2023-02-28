@@ -21,7 +21,7 @@ export const UserResolvers = {
 				where: {
 					id: args.userId
 				},
-				relations: ["posts", "comments", "comments.post", "comments.likes"],
+				relations: ['posts', 'comments', 'comments.post', 'comments.likes'],
 				order: {
 					comments: {
 						createdAt: 'DESC'

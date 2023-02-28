@@ -1,9 +1,11 @@
 import { useForm } from 'react-hook-form';
+import GoogleAutocomplete from 'react-google-autocomplete';
 import { toast } from 'react-toastify';
-import { FiPlus } from 'react-icons/fi';
+import { FiMapPin, FiPlus } from 'react-icons/fi';
 import { Heading, ImageUpload } from '@/components';
 import { useUserContext } from '@/contexts';
 import { useAddPostMutation } from '@/graphql';
+import { ChangeEvent } from 'react';
 
 interface IAddPostFormProps {
 	onClose: () => void;
@@ -12,11 +14,13 @@ interface IAddPostFormProps {
 interface IAddPostForm {
 	imgUrl: string;
 	caption: string;
+	location: string;
 }
 
 const AddPostForm = ({ onClose }: IAddPostFormProps): React.ReactElement => {
 	const { currentUser } = useUserContext();
 	const { handleSubmit, setValue, register, watch } = useForm<IAddPostForm>();
+
 	const { isLoading, addPost } = useAddPostMutation();
 
 	const onSubmit = async (data: IAddPostForm) => {
@@ -52,6 +56,16 @@ const AddPostForm = ({ onClose }: IAddPostFormProps): React.ReactElement => {
 				<input
 					placeholder="Enter a caption for your photo"
 					{...register('caption', { required: true })}
+					className="w-full mb-4"
+				/>
+
+				<GoogleAutocomplete
+					placeholder="Add a location (optional)"
+					apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+					onPlaceSelected={(place: { formatted_address: string }) =>
+						setValue('location', place.formatted_address)
+					}
+					onChange={(e: ChangeEvent<HTMLInputElement>) => setValue('location', e.target.value)}
 					className="w-full mb-6"
 				/>
 
@@ -61,7 +75,16 @@ const AddPostForm = ({ onClose }: IAddPostFormProps): React.ReactElement => {
 
 						<div className="p-4 border bg-slate-100">
 							<h4 className="mb-2 text-xl font-bold">{FORM_STATE.caption}</h4>
+
 							<img src={FORM_STATE.imgUrl} alt={FORM_STATE.imgUrl} className="mb-2" />
+
+							{FORM_STATE.location && (
+								<p className="flex gap-2 items-center mb-2">
+									<FiMapPin />
+									{FORM_STATE.location}
+								</p>
+							)}
+
 							<p className="font-semibold">Posted by {currentUser?.username}</p>
 						</div>
 					</div>

@@ -18,6 +18,7 @@ export const PostTypeDefs = gql`
 		id: ID!
 		imgUrl: String!
 		caption: String!
+		location: String
 		author: User!
 		likes: [User!]
 		comments: [Comment!]
@@ -28,10 +29,12 @@ export const PostTypeDefs = gql`
 	input AddPostInput {
 		imgUrl: String!
 		caption: String!
+		location: String
 	}
 
 	input UpdatePostInput {
 		imgUrl: String!
 		caption: String!
+		location: String
 	}
 `;

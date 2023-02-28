@@ -6,7 +6,7 @@ type TUser = {
 	lastname: string;
 	avatarUrl: string;
 	posts: TPost[];
-	comments: TComment[]
+	comments: TComment[];
 	createdAt: string;
 	updatedAt: string;
 };
@@ -15,6 +15,7 @@ type TPost = {
 	id: string;
 	imgUrl: string;
 	caption: string;
+	location?: string;
 	author: TUser;
 	likes: TUser[];
 	comments: TComment[];

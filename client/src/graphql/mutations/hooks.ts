@@ -55,7 +55,7 @@ export const useAddPostMutation = () => {
 
 	return {
 		isLoading: loading,
-		addPost: async (input: { imgUrl: string; caption: string }) => {
+		addPost: async (input: { imgUrl: string; caption: string; location?: string }) => {
 			const post = await mutate({
 				context: getRequestHeaders(),
 				variables: {
