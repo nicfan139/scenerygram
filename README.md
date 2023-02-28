@@ -2,6 +2,8 @@
 
 A social app (like Instagram) for sharing picturesque scenery. Built for fun.
 
+Photos courtesy of [Unsplash](https://unsplash.com/).
+
 ## Tech stack
 
 Client:
@@ -13,6 +15,7 @@ Client:
 - Apollo Client
 - React Query
 - React Hook Form
+- Cloudinary
 - Vite
 - Vercel
 
