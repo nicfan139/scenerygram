@@ -26,7 +26,7 @@ const AddPostForm = ({ isOpen, onClose }: IAddPostFormProps): React.ReactElement
 
 	const onSubmit = async (data: IAddPostForm) => {
 		try {
-			const response = await addPost(data);
+			const response = await addPost(currentUser?.id as string, data);
 			if (response.data.post) {
 				onClose();
 				toast('Successfully created new post');

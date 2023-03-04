@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { getRequestHeaders } from '@/helpers';
-import { POSTS_QUERY, POST_QUERY } from '../queries/typeDefs';
+import { POSTS_QUERY, POST_QUERY, USER_QUERY } from '../queries/typeDefs';
 import {
 	UPDATE_USER_MUTATION,
 	UPDATE_USER_PASSWORD_MUTATION,
@@ -56,7 +56,10 @@ export const useAddPostMutation = () => {
 
 	return {
 		isLoading: loading,
-		addPost: async (input: { imgUrl: string; caption: string; location?: string }) => {
+		addPost: async (
+			userId: string,
+			input: { imgUrl: string; caption: string; location?: string }
+		) => {
 			const post = await mutate({
 				context: getRequestHeaders(),
 				variables: {
@@ -66,6 +69,13 @@ export const useAddPostMutation = () => {
 					{
 						query: POSTS_QUERY,
 						context: getRequestHeaders()
+					},
+					{
+						query: USER_QUERY,
+						context: getRequestHeaders(),
+						variables: {
+							userId
+						}
 					}
 				]
 			});

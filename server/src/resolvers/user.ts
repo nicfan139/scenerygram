@@ -23,6 +23,9 @@ export const UserResolvers = {
 				},
 				relations: ['posts', 'comments', 'comments.post', 'comments.likes'],
 				order: {
+					posts: {
+						createdAt: 'DESC'
+					},
 					comments: {
 						createdAt: 'DESC'
 					}

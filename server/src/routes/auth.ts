@@ -2,7 +2,9 @@ import { Router, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { User } from '../entity/User';
 import { UserRepository } from '../resolvers/helpers';
+import { omit } from '../utils';
 
 dotenv.config();
 
@@ -49,41 +51,20 @@ router.post('/validate_token', async (req: Request, res: Response) => {
 	const token = req.body.token;
 	let jwtPayload;
 	try {
-		jwtPayload = jwt.verify(token, JWT_SECRET_KEY);
+		jwtPayload = jwt.verify(token, JWT_SECRET_KEY) as JwtPayload;
 	} catch (error) {
 		console.log(error);
 	}
 
 	if (jwtPayload) {
-		const user = await UserRepository.findOne({
-			where: { id: (jwtPayload as JwtPayload).id },
-			relations: [
-				'posts',
-				'posts.comments',
-				'posts.likes',
-				'posts.comments.author',
-				'posts.comments.likes'
-			],
-			order: {
-				posts: {
-					createdAt: 'DESC'
-				}
-			}
+		const user = await UserRepository.findOneBy({
+			id: jwtPayload.id
 		});
 
 		if (user) {
 			res.status(200).json({
 				isTokenValid: true,
-				user: {
-					id: user.id,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					username: user.username,
-					avatarUrl: user.avatarUrl,
-					posts: user.posts,
-					createdAt: user.createdAt,
-					updatedAt: user.updatedAt
-				}
+				user: omit<User>(user, ['password'])
 			});
 		} else {
 			res.status(500).json({

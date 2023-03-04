@@ -27,6 +27,23 @@ export const usePostQuery = (postId: string) => {
 	};
 };
 
+export const useCurrentUserProfileQuery = (userId?: string) => {
+	const { refetch } = useQuery<{ user: TUser }>(USER_QUERY, {
+		context: getRequestHeaders(),
+		variables: {
+			userId
+		},
+		skip: true
+	});
+
+	return {
+		refetch: async (userId: string) => {
+			const { data } = await refetch({ userId });
+			return data.user;
+		}
+	};
+};
+
 export const useUserQuery = (userId: string) => {
 	const { loading, data } = useQuery<{ user: TUser }>(USER_QUERY, {
 		context: getRequestHeaders(),

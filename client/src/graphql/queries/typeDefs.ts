@@ -70,6 +70,7 @@ export const USER_QUERY = gql`
 				id
 				imgUrl
 				caption
+				createdAt
 			}
 			comments {
 				id
