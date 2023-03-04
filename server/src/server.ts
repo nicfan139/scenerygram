@@ -30,7 +30,10 @@ const server = async () => {
 
 	app.use(
 		morgan('dev'),
-		cors(),
+		cors({
+			origin: process.env.SCENERYGRAM_CLIENT_URL as string,
+			credentials: true
+		}),
 		express.json(),
 		expressjwt({
 			algorithms: ['HS256'],
