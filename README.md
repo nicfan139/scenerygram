@@ -38,6 +38,8 @@ Server:
 - Apollo Server
 - TypeORM
 - PostgreSQL
+- Nodemailer
+- Sendinblue
 - Fly.io
 - Neon
 
