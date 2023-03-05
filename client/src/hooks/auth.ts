@@ -18,8 +18,24 @@ export const useAuthLogin = () =>
 		});
 	});
 
+interface IAuthValidateOtpPayload {
+	accessToken: string;
+	otp: string;
+}
+
+export const useAuthValidateOtp = () =>
+	useMutation((payload: IAuthValidateOtpPayload) => {
+		return fetch(`${BACKEND_API_URL}/api/auth/validate_otp`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(payload)
+		});
+	});
+
 interface IAuthVerifyTokenPayload {
-	token: string;
+	accessToken: string;
 }
 
 export const useAuthValidateToken = () =>

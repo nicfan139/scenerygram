@@ -23,15 +23,15 @@ export const UserContextProvider = ({ children }: { children: ReactNode }): Reac
 
 	const verifyToken = async () => {
 		try {
-			const response = await validateToken.mutateAsync({ token: ACCESS_TOKEN as string });
-			if (response.ok) {
-				const data = await response.json();
+			const response = await validateToken.mutateAsync({ accessToken: ACCESS_TOKEN as string });
+			const data = await response.json();
+			if (response.ok && data.isTokenValid) {
 				setCurrentUser(data.user);
 			} else {
 				setTimeout(() => {
 					handleLogout();
 				}, 3000);
-				toast('Unable to validate credentials. Redirecting to login in a few moments');
+				toast(`${data.errorMessage}. Redirecting to login in a few moments`);
 			}
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;

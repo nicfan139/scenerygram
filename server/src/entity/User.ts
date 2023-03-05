@@ -34,10 +34,28 @@ export class User {
 	username!: string;
 
 	@Column({
+		type: 'text'
+	})
+	email!: string;
+
+	@Column({
 		type: 'text',
 		nullable: false
 	})
 	password!: string;
+
+	@Column({
+		type: 'boolean',
+		nullable: false,
+		default: false
+	})
+	otpEnabled!: boolean;
+
+	@Column({
+		type: 'text',
+		nullable: true
+	})
+	otpSecret!: string | null;
 
 	@Column({
 		type: 'text',

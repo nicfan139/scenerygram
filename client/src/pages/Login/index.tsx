@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -7,6 +8,7 @@ import 'react-slideshow-image/dist/styles.css';
 import { Title, Loading, Password } from '@/components';
 import { useScreenContext } from '@/contexts';
 import { useAuthLogin } from '@/hooks';
+import OneTimePasswordInput from './OneTimePasswordInput';
 
 interface ILoginForm {
 	username: string;
@@ -31,15 +33,21 @@ const Login = (): React.ReactElement => {
 	});
 	const authLogin = useAuthLogin();
 
-	const onSubmit = async (data: ILoginForm) => {
+	const [otpEnabled, setOtpEnabled] = useState<boolean>(false);
+
+	const onSubmit = async (form: ILoginForm) => {
 		try {
-			const response = await authLogin.mutateAsync(data);
+			const response = await authLogin.mutateAsync(form);
+			const data = await response.json();
 			if (response.ok) {
-				const data = await response.json();
 				localStorage.setItem('scenerygram-accessToken', data.accessToken);
-				window.location.href = '/posts';
+				if (data.otpEnabled) {
+					setOtpEnabled(true);
+				} else {
+					window.location.href = '/posts';
+				}
 			} else {
-				toast('Unable to login');
+				toast(data.errorMessage);
 			}
 		} catch (e: unknown) {
 			const error = e as ErrorEvent;
@@ -66,25 +74,31 @@ const Login = (): React.ReactElement => {
 							<h1>Login</h1>
 						</Title>
 
-						<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
-							<input
-								type="text"
-								placeholder="Enter username"
-								{...register('username', {
-									required: true
-								})}
-							/>
+						{otpEnabled ? (
+							<OneTimePasswordInput />
+						) : (
+							<>
+								<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mb-4">
+									<input
+										type="text"
+										placeholder="Enter username"
+										{...register('username', {
+											required: true
+										})}
+									/>
 
-							<Password placeholder="Enter password" register={register} name="password" />
+									<Password placeholder="Enter password" register={register} name="password" />
 
-							<button type="submit" className="text-xl font-semibold">
-								Submit
-							</button>
-						</form>
+									<button type="submit" className="text-xl font-semibold">
+										Submit
+									</button>
+								</form>
 
-						<p className="my-8">
-							Don't have an account? <Link to="/register">Register here</Link>
-						</p>
+								<p className="my-8">
+									Don't have an account? <Link to="/register">Register here</Link>
+								</p>
+							</>
+						)}
 					</>
 				)}
 			</div>

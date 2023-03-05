@@ -6,7 +6,7 @@ Photos courtesy of [Unsplash](https://unsplash.com/).
 
 ## Demo
 
-You can go to the [site](https://scenerygram.vercel.app/) and use the following test credentials:
+You can go to the [site](https://scenerygram.vercel.app/) and use the following test credentials (2FA OTP disabled for this user):
 
 ```
 USERNAME=test123
@@ -38,6 +38,9 @@ Server:
 - Apollo Server
 - TypeORM
 - PostgreSQL
+- Nodemailer
+- Sendinblue
+- Speakeasy 2FA
 - Fly.io
 - Neon
 
