@@ -81,6 +81,9 @@ const AuthController = {
 			jwtPayload = jwt.verify(accessToken, JWT_SECRET_KEY) as JwtPayload;
 		} catch (error) {
 			console.log(error);
+			res.status(500).json({
+				errorMessage: 'Unable to verify access token'
+			});
 		}
 
 		if (jwtPayload) {
@@ -129,6 +132,10 @@ const AuthController = {
 			jwtPayload = jwt.verify(accessToken, JWT_SECRET_KEY) as JwtPayload;
 		} catch (error) {
 			console.log(error);
+			res.status(500).json({
+				isTokenValid: false,
+				errorMessage: 'Unable to verify access token'
+			});
 		}
 
 		if (jwtPayload) {
