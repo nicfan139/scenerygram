@@ -6,7 +6,7 @@ Photos courtesy of [Unsplash](https://unsplash.com/).
 
 ## Demo
 
-You can go to the [site](https://scenerygram.vercel.app/) and use the following test credentials (2FA OTP disabled for this user):
+You can go to the [site](https://scenerygram.vercel.app/login) and use the following test credentials (2FA OTP disabled for this user):
 
 ```
 USERNAME=test123
